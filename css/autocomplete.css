@@ -1,0 +1,46 @@
+.autoCompletion{
+	display: none;
+	background: #222;
+	color:white;
+	position:absolute;
+	margin-top:30px;
+	right:10px;
+	max-height:200px;
+	width:200px;
+	overflow-y: hidden;
+	border-radius: 5px;
+	z-index:1000;
+}
+
+.autoCompletion:after{
+	content: '';
+	position: absolute;
+	border-style: solid;
+	border-width: 0 5px 5px;
+	border-color: #222 transparent;
+	display: block;
+	width: 0;
+	z-index: 1;
+	top: -5px;
+	left: 20px;
+}
+
+.autoCompletion ul{
+	margin:5px;
+	padding:0;
+	list-style-type:none;
+}
+.autoCompletion>ul>li{
+	width:100%;
+}
+.autoCompletionTextBox{
+	width:200px;
+}
+
+.autoCompletion li:hover{
+	background: #333;
+}
+
+.autoCompletion li.selected{
+	background:#333;
+}

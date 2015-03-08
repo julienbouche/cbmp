@@ -1,0 +1,114 @@
+body{
+    margin:0;
+    padding:0;    
+}
+
+.map {
+    height: 90%;
+    width: 100%;
+}
+
+header{
+    background: #FFCC00;
+    padding:2px;
+    min-width:300px;
+}
+
+header>h1{
+    padding:0;
+    margin:0;
+    display:inline-block;
+    font-variant: small-caps;
+}
+header>nav{
+    position:relative;
+    clear:both;
+    padding:0;
+    margin:0;
+    display:inline-block;
+    
+}
+header>nav>a.nav-open{
+    display:none;
+    visibility: hidden;
+}
+header>nav>a.nav-close{
+    display:none;
+    visibility: hidden;
+}
+
+#main-menu{
+    clear: both;
+    position:relative;
+    display:block;
+    padding: 0;
+    margin:auto;
+}
+
+header>nav>div#main-menu>ul{
+    position:relative;
+    display: inline-block;
+    list-style: none;
+    padding:0;
+    margin:auto;
+    top:0;
+}
+header>nav>div#main-menu>ul>li{
+    top:0;
+    background-color: #E6C12E;
+    display: inline-block;
+    position:relative;
+    visibility: inherit;
+    border-radius: 3px 3px 3px 3px;
+    border-bottom: none;
+    line-height: 1.5em;
+    padding:2px;
+}
+header>nav>div#main-menu>ul>li:hover{
+    background-color: #FFD633;
+}
+
+header input[type="search"]{
+    position:relative;
+    float:right;
+    right:0px;
+    line-height: 1.5em;
+}
+#main-menu li a {
+    text-decoration: none;
+    font-variant: small-caps;
+    font-weight: bolder;
+}
+#main-menu li a, #main-menu li a:visited {
+    color: white;
+}
+
+.cbmp-button{
+    position:absolute;
+    top:80px;
+    left:8px;
+}
+
+/* For small screen devices*/
+@media only screen and (max-width: 55em) {
+    
+    #main-menu{
+        display:block;
+        width:100%;
+        margin:auto;
+    }
+    
+    
+    header>nav>div#main-menu>ul{
+        display:block;
+        width:300px;
+        margin:auto;
+    }
+    header input[type="search"]{
+        position:relative;
+        float:right;
+        margin:auto;
+        line-height: 1.5em;
+    }
+
+}
