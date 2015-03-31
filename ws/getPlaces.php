@@ -8,7 +8,6 @@
         $filter = mysql_real_escape_string($_GET['q']);
         $sql .= " AND place.name like '%$filter%'";
     }
-    error_log($sql);
     $result = mysql_query($sql);
 ?>
 [

@@ -79,7 +79,8 @@ var cbmp = {
                         /*infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>';
                         infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>';*/
                         
-                        infos+='<p>'+feature.get('desc')+'</p>';
+                        infos+='<p id="desc'+feature.get('id')+'">'+feature.get('desc')+'</p>';
+                        infos+='<input type="button" value="+" onclick="getDescriptionDetails(this,'+feature.get('id')+');" />';
                         infos+='<input type="button" value="Delete" onclick="deletePlace(\''+feature.get('name')+'\','+feature.get('id')+');"/>';
                         infos+='</div>';
                     }

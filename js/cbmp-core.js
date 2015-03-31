@@ -16,6 +16,29 @@ function createXHR(){
 	return xhr;
 }
 
+function getDescriptionDetails(element,id){
+	//send the delete order
+		var xhr = createXHR();
+		var data = "id="+id;
+		
+		// We define what will happen if the data are successfully sent
+		xhr.addEventListener('load', function(event) {
+			//if succeed, refresh places displayed on the map
+			document.getElementById('desc'+id).innerHTML = xhr.responseText;
+		});
+		
+		// We define what will happen in case of error
+		xhr.addEventListener('error', function(event) {
+			alert('Oups! Something went wrong.');
+		});
+		
+		// We setup our request
+		xhr.open('GET', "ws/getFullDescription.php?"+data, true);
+		
+		// We just send our data
+		xhr.send(null);
+}
+
 function deletePlace(name, id) {
 	//code
 	if (confirm('Are you sure you want to delete "'+name+'"?')) {
@@ -47,9 +70,6 @@ function deletePlace(name, id) {
 		
 		// We just send our data
 		xhr.send(data);
-	}
-	else{
-		//alert("Alright !");
 	}
 }
 
