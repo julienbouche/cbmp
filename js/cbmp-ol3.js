@@ -75,7 +75,7 @@ var cbmp = {
                         var infos = "";
                         infos+='<div>';
                         infos+='<h2>'+feature.get('name')+'</h2>';
-                        infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>';
+                        infos+='<a href="'+feature.get('website')+'" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>';
                         /*infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>';
                         infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>';*/
                         
@@ -85,7 +85,10 @@ var cbmp = {
                         infos+='</div>';
                     }
                     else{ //the user is trying to add a new place
-                        var [lng,lat] = geometry.clone().transform("EPSG:3857","EPSG:4326").getCoordinates();
+                        var lng, lat, newcoord;
+                        newcoord = geometry.clone().transform("EPSG:3857","EPSG:4326").getCoordinates();
+                        lng = newcoord[0];
+                        lat = newcoord[1];
                         
                         infos = "<form method='GET' action='ws/addPlace.php' onsubmit='return(sendFormData(this));'>";
                         infos += "<input type='text' placeholder='Name' name='name' />";
