@@ -25,7 +25,8 @@ var cbmp = {
                     projection:"EPSG:3857"
                     });
                 
-            var breweriesLayer = new ol.layer.Vector({
+            var breweriesLayer = new ol.source.Cluster({
+                distance:30,
                 source: vectorSource
                 });
             
@@ -35,6 +36,62 @@ var cbmp = {
                 zoom: 5
             });
             
+            
+            var styleCache = {};
+            var clusters = new ol.layer.Vector({
+                source: breweriesLayer,
+                style: function(feature, resolution) {
+                  var size = feature.get('features').length;
+                  var style = styleCache[size];
+                  if (!style) {
+                    if (size==1) {
+                        //Only One element to show
+                        style = [new ol.style.Style({
+                            image: new ol.style.Icon(
+                            ({
+                                anchor: [0.5, 0.5],
+                                anchorXUnits: 'fraction',
+                                anchorYUnits: 'fraction',
+                                opacity: 1,
+                                src: 'img/beerbarrel.svg',
+                                scale:0.5
+                            })),
+                            text: new ol.style.Text({
+                                text: '',
+                                fill: new ol.style.Fill({
+                                    color: '#fff'
+                                })
+                            })
+                        })];
+                        
+                    }
+                    else {
+                        //Clustering strategy for multiple elements
+                        style = [new ol.style.Style({
+                      image: new ol.style.Circle({
+                        radius: 10,
+                        stroke: new ol.style.Stroke({
+                          color: '#fff'
+                        }),
+                        fill: new ol.style.Fill({
+                          color: '#FFCC00'
+                        })
+                      }),
+                      text: new ol.style.Text({
+                        text: size.toString(),
+                        fill: new ol.style.Fill({
+                          color: '#fff'
+                        })
+                      })
+                    })];
+                    }
+                    
+                    styleCache[size] = style;
+                  }
+                  return style;
+                }
+              });
+            
             //defines the map
             map = new ol.Map({
                 target: container,
@@ -42,7 +99,7 @@ var cbmp = {
                     new ol.layer.Tile({
                         source: new ol.source.MapQuest({layer: 'osm'})
                     }),
-                    breweriesLayer
+                    clusters
                 ],
                 view:myView
             });
