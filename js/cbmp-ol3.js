@@ -75,9 +75,20 @@ var cbmp = {
                         var infos = "";
                         infos+='<div>';
                         infos+='<h2>'+feature.get('name')+'</h2>';
-                        infos+='<a href="'+feature.get('website')+'" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>';
-                        /*infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>';
-                        infos+='<a href="'+feature.get('website')+'"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>';*/
+                        
+                        if ( feature.get('website')!='') {
+                            infos+='<a href="'+feature.get('website')+'" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>';
+                        }
+                        
+                        if ( feature.get('facebook')!='') {
+                            infos+='<a href="'+feature.get('facebook')+'"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>';
+                        }
+                        
+                        if ( feature.get('twitter')!='') {
+                            infos+='<a href="'+feature.get('twitter')+'"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>';
+                        }
+                        /*
+                        */
                         
                         infos+='<p id="desc'+feature.get('id')+'">'+feature.get('desc')+'</p>';
                         infos+='<input type="button" value="+" onclick="getDescriptionDetails(this,'+feature.get('id')+');" />';
@@ -164,8 +175,8 @@ var cbmp = {
                                 desc : jsonPlaces[indexPlaces].desc,
                                 type : jsonPlaces[indexPlaces].type,
                                 website : jsonPlaces[indexPlaces].website,
-                                facebook : '',
-                                twitter: ''
+                                facebook : jsonPlaces[indexPlaces].facebook,
+                                twitter: jsonPlaces[indexPlaces].twitter
                             });
                             
                             //styling the marker's place

@@ -3,7 +3,7 @@
 
     db_connect();
 
-    $sql = "SELECT place.id as id, place.name as place, lat, lng, description, website, category.name as category FROM place, category WHERE place.id_category=category.id";
+    $sql = "SELECT DISTINCT place.id as id, place.name as place, lat, lng, description, website, facebook, twitter, category.name as category FROM place, category WHERE place.id_category=category.id";
     if(isset($_GET['q'])){
         $filter = mysql_real_escape_string($_GET['q']);
         $sql .= " AND place.name like '%$filter%'";
@@ -25,7 +25,9 @@
         "lng" : <?=$row['lng']?>,
         "desc" : "<?=utf8_encode(substr($row['description'], 0, 50)."...")?>",
         "type" : "<?=$row['category']?>",
-        "website" : "<?=$row['website']?>"
+        "website" : "<?=$row['website']?>",
+        "facebook" : "<?=$row['facebook']?>",
+        "twitter" : "<?=$row['twitter']?>"
     }
 <?php
             if($cpt < $nb_places){
