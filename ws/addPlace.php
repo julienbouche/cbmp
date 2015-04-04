@@ -14,6 +14,13 @@
         $lng = intval($_POST['lng']*1000000);
         $id_cat = intval($_POST['type']);
         
+        //cleaning, reformating field $website
+        if(!preg_match("#^http://#i", $website)){
+            $website = "http://".$website;
+        }
+        
+        //inserting new entry
+        
         $sql = "INSERT INTO place(name, description, lat, lng, website, id_category) VALUES('$name', '$desc', $lat, $lng, '$website', $id_cat)";
         
         $result = mysql_query($sql);
