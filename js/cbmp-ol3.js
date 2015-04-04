@@ -128,28 +128,29 @@ var cbmp = {
                     var coord = geometry.getCoordinates();
                     popup.setPosition(coord);
 
-                    if (feature.get("name")) {//there is an existing place where the user clicked     
+                    if (feature.get('features').length==1 && feature.get('features')[0].get("name")) {//there is an existing place where the user clicked     
                         var infos = "";
+                        var selectedFeature = feature.get('features')[0];
                         infos+='<div>';
-                        infos+='<h2>'+feature.get('name')+'</h2>';
+                        infos+='<h2>'+selectedFeature.get('name')+'</h2>';
                         
-                        if ( feature.get('website')!='') {
-                            infos+='<a href="'+feature.get('website')+'" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>';
+                        if ( selectedFeature.get('website')!='') {
+                            infos+='<a href="'+selectedFeature.get('website')+'" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>';
                         }
                         
-                        if ( feature.get('facebook')!='') {
-                            infos+='<a href="'+feature.get('facebook')+'"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>';
+                        if ( selectedFeature.get('facebook')!='') {
+                            infos+='<a href="'+selectedFeature.get('facebook')+'"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>';
                         }
                         
-                        if ( feature.get('twitter')!='') {
-                            infos+='<a href="'+feature.get('twitter')+'"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>';
+                        if ( selectedFeature.get('twitter')!='') {
+                            infos+='<a href="'+selectedFeature.get('twitter')+'"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>';
                         }
                         /*
                         */
                         
-                        infos+='<p id="desc'+feature.get('id')+'">'+feature.get('desc')+'</p>';
-                        infos+='<input type="button" value="+" onclick="getDescriptionDetails(this,'+feature.get('id')+');" />';
-                        infos+='<input type="button" value="Delete" onclick="deletePlace(\''+feature.get('name')+'\','+feature.get('id')+');"/>';
+                        infos+='<p id="desc'+selectedFeature.get('id')+'">'+selectedFeature.get('desc')+'</p>';
+                        infos+='<input type="button" value="+" onclick="getDescriptionDetails(this,'+selectedFeature.get('id')+');" />';
+                        infos+='<input type="button" value="Delete" onclick="deletePlace(\''+selectedFeature.get('name')+'\','+selectedFeature.get('id')+');"/>';
                         infos+='</div>';
                     }
                     else{ //the user is trying to add a new place
