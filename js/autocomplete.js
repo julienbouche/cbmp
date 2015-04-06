@@ -12,11 +12,11 @@
 			disableAutoCompleteNow();
 		}
 	}
-	
+	var places = [];
 	//creates AJAX Call to get places and populate ul element to display results
 	function getPlacesFiltered(filter, list) {
 		
-		var places = [];
+		
 		var xhr = createXHR();
 		var data = "q="+filter;
 		
@@ -27,7 +27,7 @@
                     if ( xhr.readyState == 4 ){
 			
 			//evaluate the JSON response
-			var places = eval(xhr.responseText);
+			places = eval(xhr.responseText);
 
 			//empty list
 			list.innerHTML = "";
@@ -37,14 +37,17 @@
 				var li_elt = document.createElement("li");
 				
 				li_elt.innerHTML = places[indexPlaces].name;
-				li_elt.lng = places[indexPlaces].lng/1000000;
-				li_elt.lat =places[indexPlaces].lat/1000000
+				li_elt.dataset.lng = places[indexPlaces].lng;
+				li_elt.dataset.lat =places[indexPlaces].lat;
 				
+				//add an action event on click to center the map on the clicked item
 				li_elt.onclick=function(){
 					var map = carte.getMap();
-					map.getView().setCenter(ol.proj.transform([li_elt.lng, li_elt.lat], 'EPSG:4326', 'EPSG:3857'));
+					map.getView().setCenter(ol.proj.transform([this.dataset.lng/1000000, this.dataset.lat/1000000], 'EPSG:4326', 'EPSG:3857'));
 					map.getView().setZoom(15);
 				};
+				
+				//add the element to the ul list
 				list.appendChild(li_elt);
 			}
 			
