@@ -3,7 +3,7 @@
 		
 		var li_items = list.getElementsByTagName("li");
 		
-		if(filter.length> filterNbCharMin){
+		if(filter.length>=filterNbCharMin){
 			//retrieve Places with filter contained in name
 			getPlacesFiltered(filter, list);
 		}
