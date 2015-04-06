@@ -122,13 +122,12 @@ var cbmp = {
                 });
                 
                 if (feature) { //if element exists, show infos from it
-                    
                     //get the position
                     var geometry = feature.getGeometry();
                     var coord = geometry.getCoordinates();
                     popup.setPosition(coord);
-
-                    if (feature.get('features').length==1 && feature.get('features')[0].get("name")) {//there is an existing place where the user clicked     
+                    
+                    if (feature.get('features') && feature.get('features').length==1 && feature.get('features')[0].get("name")) {//there is an existing place where the user clicked     
                         var infos = "";
                         var selectedFeature = feature.get('features')[0];
                         infos+='<div>';
@@ -178,6 +177,7 @@ var cbmp = {
                 else{
                     //hide potentially previously displayed popup
                     popup.hide();
+                    
                 }
             });
         };

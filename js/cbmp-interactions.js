@@ -5,7 +5,6 @@ cbmp.draw;
 cbmp.interactions = {
     addDrawInteraction : function (map) {
         if (map) {
-            //
             if (!cbmp.draw) {
                 //code
                 var source;
@@ -14,7 +13,6 @@ cbmp.interactions = {
                     type: 'Point'
                 });
             }
-            
             map.addInteraction(cbmp.draw);
         }
     },
