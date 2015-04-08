@@ -151,28 +151,24 @@ var cbmp = {
                         infos+='<input type="button" value="+" onclick="getDescriptionDetails(this,'+selectedFeature.get('id')+');" />';
                         infos+='<input type="button" value="Delete" onclick="deletePlace(\''+selectedFeature.get('name')+'\','+selectedFeature.get('id')+');"/>';
                         infos+='</div>';
+                        
+                        //show the informations
+                        popup.show(coord, infos);
                     }
                     else{ //the user is trying to add a new place
                         var lng, lat, newcoord;
                         newcoord = geometry.clone().transform("EPSG:3857","EPSG:4326").getCoordinates();
                         lng = newcoord[0];
                         lat = newcoord[1];
-                        
-                        infos = "<form method='GET' action='ws/addPlace.php' onsubmit='return(sendFormData(this));'>";
-                        infos += "<input type='text' placeholder='Name' name='name' />";
-                        infos += "<input type='text' placeholder='Description' name='desc' />";
-                        infos += "<input type='text' placeholder='http://' name='website' />";
-                        infos += "<input type='text' placeholder='URL Facebook' name='facebook'/>";
-                        infos += "<input type='text' placeholder='URL twitter' name='twitter' />";
-                        infos += "<input type='hidden' name='lat' value='"+lat+"'/>";
-                        infos += "<input type='hidden' name='lng' value='"+lng+"'/>";
-                        infos += "<select name='type'><option value='1'>Brewery</option><option value='2'>Bar</option></select>"; //TODO retrieve data from DB
-                        infos += "<input type='submit' value='OK' />";
-                        infos += "</form>";
+                        xhr = createXHR();
+                        if(xhr!=null) {
+                            xhr.open("GET","addPlaceForm.php?lat="+lat+"&lng="+lng, true);
+                            xhr.onreadystatechange = function(){
+                                popup.show(coord, xhr.responseText);
+                            };
+                            xhr.send(null);
+                        }
                     }
-                    
-                    //show the informations
-                    popup.show(coord, infos);
                 }
                 else{
                     //hide potentially previously displayed popup
