@@ -12,8 +12,8 @@ if(isset($_GET['lat']) && strlen(trim($_GET['lat'])) > 0 && isset($_GET['lng']) 
     <input type='text' placeholder='http://' name='website' />
     <input type='text' placeholder='URL Facebook' name='facebook'/>
     <input type='text' placeholder='URL twitter' name='twitter' />
-    <input type='text' name='lat' value='<?=$lat?>'/>
-    <input type='text' name='lng' value='<?=$lng?>'/>
+    <input type='hidden' name='lat' value='<?=$lat?>'/>
+    <input type='hidden' name='lng' value='<?=$lng?>'/>
     <select name='type'><option value='1'>Brewery</option><option value='2'>Bar</option></select>
     <input type='submit' value='OK' />
 </form>
