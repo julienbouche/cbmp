@@ -209,12 +209,7 @@ var cbmp = {
                             olplace = new ol.Feature({
                                 geometry : new ol.geom.Point([jsonPlaces[indexPlaces].lng/1000000,jsonPlaces[indexPlaces].lat/1000000]).transform('EPSG:4326', 'EPSG:3857'),
                                 name : jsonPlaces[indexPlaces].name,
-                                id : jsonPlaces[indexPlaces].id,
-                                desc : jsonPlaces[indexPlaces].desc,
-                                type : jsonPlaces[indexPlaces].type,
-                                website : jsonPlaces[indexPlaces].website,
-                                facebook : jsonPlaces[indexPlaces].facebook,
-                                twitter: jsonPlaces[indexPlaces].twitter
+                                id : jsonPlaces[indexPlaces].id
                             });
                             
                             //styling the marker's place
