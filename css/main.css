@@ -1,14 +1,19 @@
-body{
+html,body{
     margin:0;
-    padding:0;    
+    padding:0;
+    height:100%;
+    width:100%;
 }
 
+
 .map {
-    height: 90%;
+    position:relative;
+    height: 94%;
     width: 100%;
 }
 
 header{
+    position:relative;
     background: #FFCC00;
     padding:2px;
     min-width:300px;
@@ -27,14 +32,6 @@ header>nav{
     margin:0;
     display:inline-block;
     
-}
-header>nav>a.nav-open{
-    display:none;
-    visibility: hidden;
-}
-header>nav>a.nav-close{
-    display:none;
-    visibility: hidden;
 }
 
 #main-menu{
@@ -89,26 +86,72 @@ header input[type="search"]{
     left:8px;
 }
 
+
+.nav-open,
+.nav-close {
+	display: none;
+	color: #FFD633;
+	font-size: 1.2em;
+	font-weight: 400;
+	font-family: "Yanone Kaffeesatz", Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-transform: uppercase;
+	line-height: 50px;
+	letter-spacing: 1px;
+	background: #060608;
+        width: 100%;
+	}
 /* For small screen devices*/
 @media only screen and (max-width: 55em) {
-    
-    #main-menu{
-        display:block;
+    header>nav{
         width:100%;
-        margin:auto;
+    }
+    .map{
+        height: 82%;
+    }
+    .nav-open {
+	display: block;
+	text-align: center;
+    }
+    #main-navigation:target > .nav-open {
+        display: none;
+        background-color: #F00;
+    }
+    #main-navigation:target > .nav-close {
+	display: block;
+	text-align: center;
     }
     
-    
-    header>nav>div#main-menu>ul{
+    #main-menu{
+        display:none;
+        width:100%;
+        position: relative;
+        text-align: left;
+    }
+    #main-navigation:target > #main-menu {
         display:block;
-        width:300px;
-        margin:auto;
+    }
+    
+    #main-navigation > #main-menu > ul > li {
+        float: none;
+        display: block;
+        z-index:1000000;
+        text-align: center;
+        position: relative;
+    }
+    
+    #main-navigation > #main-menu>ul{
+        display:block;
+        position:absolute;
+        width:100%;
     }
     header input[type="search"]{
         position:relative;
-        float:right;
-        margin:auto;
+        padding-top:2px;
+        padding-bottom: 2px;
         line-height: 1.5em;
+        margin:auto;
+        width:99%;
     }
 
 }
