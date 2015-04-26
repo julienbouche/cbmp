@@ -24,7 +24,7 @@ if(isset($_GET['id'])){
     <?php if($row['twitter'] ) : ?>
         <a href="<?=$row['twitter']?>"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>
     <?php endif; ?>
-    <p id="desc'+selectedFeature.get('id')+'"><?=utf8_encode($row['description'])?></p>
+    <div class="description" id="desc'+selectedFeature.get('id')+'"><?=utf8_encode(nl2br($row['description']))?></div>
     <!--input type="button" value="+" onclick="getDescriptionDetails(this,<?=$id?>);" /-->
     <input type="button" value="Delete" onclick="deletePlace('<?=$row['placeName']?>',<?=$id?>);"/>
 </div>
