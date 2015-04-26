@@ -16,15 +16,15 @@ function createXHR(){
 	return xhr;
 }
 
-function getDescriptionDetails(element,id){
+function getEditForm(element,id){
 	//send the delete order
 		var xhr = createXHR();
 		var data = "id="+id;
 		
 		// We define what will happen if the data are successfully sent
 		xhr.addEventListener('load', function(event) {
-			//if succeed, refresh places displayed on the map
-			document.getElementById('desc'+id).innerHTML = xhr.responseText;
+			//if succeed, update popup's content with html response
+			carte.setPopupContent(xhr.responseText);
 		});
 		
 		// We define what will happen in case of error
@@ -33,7 +33,7 @@ function getDescriptionDetails(element,id){
 		});
 		
 		// We setup our request
-		xhr.open('GET', "ws/getFullDescription.php?"+data, true);
+		xhr.open('GET', "editPlaceInfos.php?"+data, true);
 		
 		// We just send our data
 		xhr.send(null);

@@ -10,7 +10,12 @@ var cbmp = {
                 popup.hide();
             }
         }
-        
+        this.setPopupContent = function(html){
+            if (popup) {
+                //code
+                popup.content.innerHTML = html;
+            }
+        }
         //accesser
         this.getMap = function(){
             return map;
