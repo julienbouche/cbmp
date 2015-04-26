@@ -93,8 +93,20 @@ article{
     font-family: "Yanone Kaffeesatz", Arial, Helvetica, sans-serif;
     border: 1px lightgrey dotted;
 }
-
-
+form{
+    padding:0px 20px 0px 10px;
+    overflow: auto;
+}
+form > textarea {
+    width:100%;
+}
+form > input{
+    width:100%;
+}
+form > select {
+   width: 100%;
+   margin:0;
+}
 .nav-open,
 .nav-close {
 	display: none;
