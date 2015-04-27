@@ -34,8 +34,8 @@
 }
 
 .ol-popup-content {
-    min-width: 200px;
-    overflow-x: auto;
+    min-width: 300px;
+    
 }
 
 .ol-popup-closer {
@@ -59,6 +59,8 @@
 .ol-popup div.description {
     padding: 0.1em;
     margin: 0;
+    max-height:300px;
+    overflow-x: auto;
     font-size: small;
     color: #999;
 }
