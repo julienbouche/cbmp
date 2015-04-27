@@ -46,11 +46,13 @@ var cbmp = {
             var clusters = new ol.layer.Vector({
                 source: breweriesLayer,
                 style: function(feature, resolution) {
-                  var size = feature.get('features').length;
-                  var style = styleCache[size];
-                  if (!style) {
+                    var size = feature.get('features').length;
+                    var style = styleCache[size];  
+                  
                     if (size==1) {
                         //Only One element to show
+                        var icon_name = feature.get('features')[0].get('type');
+                        
                         style = [new ol.style.Style({
                             image: new ol.style.Icon(
                             ({
@@ -58,7 +60,7 @@ var cbmp = {
                                 anchorXUnits: 'fraction',
                                 anchorYUnits: 'fraction',
                                 opacity: 1,
-                                src: 'img/beerbarrel.svg',
+                                src: 'img/'+icon_name+'.png',
                                 scale:0.5
                             })),
                             text: new ol.style.Text({
@@ -71,27 +73,21 @@ var cbmp = {
                         
                     }
                     else {
-                        //Clustering strategy for multiple elements
-                        style = [new ol.style.Style({
-                      image: new ol.style.Circle({
-                        radius: 10,
-                        stroke: new ol.style.Stroke({
-                          color: '#fff'
-                        }),
-                        fill: new ol.style.Fill({
-                          color: '#FFCC00'
-                        })
-                      }),
-                      text: new ol.style.Text({
-                        text: size.toString(),
-                        fill: new ol.style.Fill({
-                          color: '#fff'
-                        })
-                      })
-                    })];
-                    }
-                    
-                    styleCache[size] = style;
+                        if (!style) {
+                            //Clustering strategy for multiple elements
+                            style = [new ol.style.Style({
+                                image: new ol.style.Circle({
+                                    radius: 10,
+                                    stroke: new ol.style.Stroke({color: '#fff'}),
+                                    fill: new ol.style.Fill({color: '#FFCC00'})
+                                    }),
+                                text: new ol.style.Text({
+                                    text: size.toString(),
+                                    fill: new ol.style.Fill({color: '#fff'})
+                                })
+                            })];
+                            styleCache[size] = style;
+                        }
                   }
                   return style;
                 }
@@ -180,32 +176,6 @@ var cbmp = {
                         //retrieve items
                         var jsonPlaces = eval(xhr.responseText);
                         var olplaces = [];
-                        
-                        //styling point for brewery
-                        var iconStyle = new ol.style.Style({
-                            image: new ol.style.Icon(
-                            ({
-                                anchor: [0.5, 0.5],
-                                anchorXUnits: 'fraction',
-                                anchorYUnits: 'fraction',
-                                opacity: 1,
-                                src: 'img/beerbarrel.svg',
-                                scale:0.5
-                            }))
-                        });
-                        
-                        //styling point for bar/brewpub
-                        var iconStyle2 = new ol.style.Style({
-                            image: new ol.style.Icon(
-                            ({
-                                anchor: [0.4, 20],
-                                anchorXUnits: 'fraction',
-                                anchorYUnits: 'pixels',
-                                opacity: 1,
-                                src: 'img/beer.png',
-                                scale:0.3
-                            }))
-                        });
         
                         var olplace;
                         for(var indexPlaces=0;indexPlaces<jsonPlaces.length; indexPlaces++){
@@ -214,16 +184,9 @@ var cbmp = {
                             olplace = new ol.Feature({
                                 geometry : new ol.geom.Point([jsonPlaces[indexPlaces].lng/1000000,jsonPlaces[indexPlaces].lat/1000000]).transform('EPSG:4326', 'EPSG:3857'),
                                 name : jsonPlaces[indexPlaces].name,
-                                id : jsonPlaces[indexPlaces].id
+                                id : jsonPlaces[indexPlaces].id,
+                                type : jsonPlaces[indexPlaces].type
                             });
-                            
-                            //styling the marker's place
-                            if(jsonPlaces[indexPlaces].type === "Brewery"){
-                                olplace.setStyle(iconStyle);
-                            }
-                            else{
-                                olplace.setStyle(iconStyle2);
-                            }
                             
                             //adding the place to the list
                             olplaces[indexPlaces] = olplace;
