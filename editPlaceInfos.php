@@ -16,7 +16,7 @@ if(isset($_GET['id']) && strlen(trim($_GET['id'])) > 0 ){
 ?>
 <form method='POST' action='ws/addPlace.php' onsubmit='return(sendFormData(this));'>
     <input type='hidden' name='id' value='<?=$id?>' />
-    <input type='text' placeholder='Name' name='name' value='<?=$row['placeName']?>' />
+    <input type='text' placeholder='Name' name='name' value="<?=$row['placeName']?>" />
     <textarea rows=4 placeholder='Description' name='desc'><?=$row['description']?></textarea>
     <input type='text' placeholder='http://' name='website' value='<?=$row['website']?>' />
     <input type='text' placeholder='URL Facebook' name='facebook' value='<?=$row['facebook']?>' />
