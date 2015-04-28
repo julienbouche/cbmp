@@ -1,5 +1,6 @@
 <?php
 require_once('script/db.php');
+require_once('script/string.php');
 
 if(isset($_GET['id'])){
     db_connect();
@@ -13,7 +14,7 @@ if(isset($_GET['id'])){
 ?>
 
 <div>
-    <h2><?=utf8_encode($row['placeName'])?></h2>
+    <h2><?=utf8_encode($stripslashes($row['placeName']))?></h2>
     <?php if($row['website']) : ?>                
         <a href="<?=$row['website']?>" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>
     <?php endif; ?>
@@ -24,7 +25,7 @@ if(isset($_GET['id'])){
     <?php if($row['twitter'] ) : ?>
         <a href="<?=$row['twitter']?>"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>
     <?php endif; ?>
-    <div class="description" id="desc'+selectedFeature.get('id')+'"><?=utf8_encode(nl2br($row['description']))?></div>
+    <div class="description" id="desc'+selectedFeature.get('id')+'"><?=utf8_encode(nl2br($stripslashes($row['description'])))?></div>
     <input type="button" value="Edit" onclick="getEditForm(this,<?=$id?>);" >
     <input type="button" value="Delete" onclick="deletePlace('<?=$row['placeName']?>',<?=$id?>);"/>
 </div>
