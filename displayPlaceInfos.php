@@ -27,7 +27,7 @@ if(isset($_GET['id'])){
     <?php endif; ?>
     <div class="description" id="desc'+selectedFeature.get('id')+'"><?=utf8_encode(nl2br($stripslashes($row['description'])))?></div>
     <input type="button" value="Edit" onclick="getEditForm(this,<?=$id?>);" >
-    <input type="button" value="Delete" onclick="deletePlace('<?=$row['placeName']?>',<?=$id?>);"/>
+    <input type="button" value="Delete" onclick="deletePlace('<?=htmlspecialchars(addslashes($stripslashes(utf8_encode($row['placeName']))))?>',<?=$id?>);"/>
 </div>
 <?php
     }

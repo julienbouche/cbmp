@@ -20,7 +20,7 @@
 
     {
         "id" : <?=$row['id']?>,
-        "name" : "<?=utf8_encode($row['place'])?>",
+        "name" : "<?=htmlspecialchars(addslashes((utf8_encode($row['place']))))?>",
         "lat" : <?=$row['lat']?>,
         "lng" : <?=$row['lng']?>,
         "type" : "<?=$row['category']?>"
