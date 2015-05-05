@@ -62,5 +62,6 @@
 @media only screen and (max-width: 55em) {
     .autoCompletion{
 	left:10px;
+	margin-top:5px;
     }
 }
