@@ -7,7 +7,7 @@ html,body{
 
 
 .map {
-    position:relative;
+    position:absolute;
     height: 94%;
     width: 100%;
 }
@@ -45,10 +45,7 @@ header input[type="search"]{
         transition: all ease 0.5s; /*leaving focus transition*/
     }
 
-header input[type="search"]:focus{
-    width:200px;
-    transition: all ease 0.5s;
-}
+
     
 #main-menu{
     clear: both;
@@ -83,7 +80,6 @@ header>nav>div#main-menu>ul>li:hover{
 
 header input[type="search"]{
     position:relative;
-    float:right;
     right:0px;
     line-height: 1.5em;
 }
@@ -137,10 +133,29 @@ form > select {
 	background: #060608;
         width: 100%;
 	}
-/* For small screen devices*/
+        
+/* For Large screen devices only */
+@media only screen and (min-width: 55em) {
+    header input[type="search"]{
+        float:right;
+    }
+    header input[type="search"]:focus{
+        width:200px;
+        transition: all ease 0.5s;
+    }
+}
+
+/* For small screen devices only */
 @media only screen and (max-width: 55em) {
     header>nav{
         width:100%;
+    }
+    header>h1{
+        width:90%;
+        margin:auto;
+        display:block;
+        font-variant: small-caps;
+        text-align: center;
     }
     .map{
         height: 82%;
@@ -182,12 +197,14 @@ form > select {
         width:100%;
     }
     header input[type="search"]{
+        display:block;
         position:relative;
         padding-top:2px;
         padding-bottom: 2px;
-        line-height: 1.5em;
         margin:auto;
-        width:99%;
+        border-radius:10px 10px 10px 10px;
+        width:90%;
     }
+   
 
 }

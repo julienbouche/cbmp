@@ -1,15 +1,16 @@
 .autoCompletion{
+	position:fixed;
 	display: none;
-	background: #222;
+	background: #FFCC00;
 	color:white;
-	position:absolute;
 	margin-top:30px;
-	right:10px;
-	max-height:200px;
 	width:200px;
-	overflow-y: hidden;
+	overflow-y: auto;
+	border: 1px solid #000;
 	border-radius: 5px;
 	z-index:1000;
+	padding : 0px;
+	max-height:80%;
 }
 
 .autoCompletion:after{
@@ -19,8 +20,8 @@
 	border-width: 0 5px 5px;
 	border-color: #222 transparent;
 	display: block;
-	width: 0;
-	z-index: 1;
+	width: 5px;
+	z-index: 1001;
 	top: -5px;
 	left: 20px;
 }
@@ -28,7 +29,9 @@
 .autoCompletion ul{
 	margin:5px;
 	padding:0;
+	line-height:1.8em;
 	list-style-type:none;
+
 }
 .autoCompletion>ul>li{
 	width:100%;
@@ -39,8 +42,25 @@
 
 .autoCompletion li:hover{
 	background: #333;
+	
 }
 
 .autoCompletion li.selected{
 	background:#333;
+}
+
+
+/* For Large screen devices only */
+@media only screen and (min-width: 55em) {
+    .autoCompletion{
+	opacity: 0.8;
+	right:10px;
+    }
+}
+
+/* For small screen devices only */
+@media only screen and (max-width: 55em) {
+    .autoCompletion{
+	left:10px;
+    }
 }
