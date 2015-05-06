@@ -123,12 +123,12 @@ form > select {
 .nav-close {
 	display: none;
 	color: #FFD633;
-	font-size: 1.2em;
+	font-size: 1em;
 	font-weight: 400;
 	font-family: "Yanone Kaffeesatz", Arial, Helvetica, sans-serif;
 	text-decoration: none;
 	text-transform: uppercase;
-	line-height: 50px;
+	line-height: 30px;
 	letter-spacing: 1px;
 	background: #060608;
         width: 100%;
@@ -150,13 +150,16 @@ form > select {
     header>nav{
         width:100%;
     }
+    
     header>h1{
         width:90%;
         margin:auto;
         display:block;
         font-variant: small-caps;
+        font-size: large;
         text-align: center;
     }
+    
     .map{
         height: 82%;
     }
