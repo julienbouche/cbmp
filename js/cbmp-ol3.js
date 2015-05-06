@@ -2,7 +2,7 @@ var cbmp = {
     //constructor
     CBMap : function(containerId){
         var container = containerId;
-        var vectorSource, map, popup;
+        var vectorsSource, map, popup, clusters;
         
         this.hidePopup = function(){
             if (popup) {
@@ -25,15 +25,75 @@ var cbmp = {
         this.init = function() {
         
             //create layer to add places on
-            vectorSource = new ol.source.Vector({
+            vectorsSource = {};
+            placesLayers = {};
+            clusters = [];
+            var styleCache = {};
+            
+            //loop for each type of place
+            for(index=0; index < 4; index++){
+                //create a vector for each type
+                vectorsSource[index] = new ol.source.Vector({
                     features: [],
                     projection:"EPSG:3857"
                     });
                 
-            var breweriesLayer = new ol.source.Cluster({
-                distance:30,
-                source: vectorSource
+                //creates the corresponding layer for each type of place
+                placesLayers[index] = new ol.source.Cluster({
+                    distance:30,
+                    source: vectorsSource[index]
                 });
+                
+                clusters[index] = new ol.layer.Vector({
+                    source: placesLayers[index],
+                    style: function(feature, resolution) {
+                        var size = feature.get('features').length;
+                        var style = styleCache[size];  
+                      
+                        if (size==1) {
+                            //Only One element to show
+                            var icon_name = feature.get('features')[0].get('type');
+                            
+                            style = [new ol.style.Style({
+                                image: new ol.style.Icon(
+                                ({
+                                    anchor: [0.5, 0.5],
+                                    anchorXUnits: 'fraction',
+                                    anchorYUnits: 'fraction',
+                                    opacity: 1,
+                                    src: 'img/'+icon_name+'.png',
+                                    scale:0.5
+                                })),
+                                text: new ol.style.Text({
+                                    text: '',
+                                    fill: new ol.style.Fill({
+                                        color: '#fff'
+                                    })
+                                })
+                            })];
+                            
+                        }
+                        else {
+                            if (!style) {
+                                //Clustering strategy for multiple elements
+                                style = [new ol.style.Style({
+                                    image: new ol.style.Circle({
+                                        radius: 10,
+                                        stroke: new ol.style.Stroke({color: '#fff'}),
+                                        fill: new ol.style.Fill({color: '#FFCC00'})
+                                        }),
+                                    text: new ol.style.Text({
+                                        text: size.toString(),
+                                        fill: new ol.style.Fill({color: '#fff'})
+                                    })
+                                })];
+                                styleCache[size] = style;
+                            }
+                      }
+                      return style;
+                    }
+              });
+            }
             
             //create the view
             var myView =new ol.View({
@@ -42,57 +102,6 @@ var cbmp = {
             });
             
             
-            var styleCache = {};
-            var clusters = new ol.layer.Vector({
-                source: breweriesLayer,
-                style: function(feature, resolution) {
-                    var size = feature.get('features').length;
-                    var style = styleCache[size];  
-                  
-                    if (size==1) {
-                        //Only One element to show
-                        var icon_name = feature.get('features')[0].get('type');
-                        
-                        style = [new ol.style.Style({
-                            image: new ol.style.Icon(
-                            ({
-                                anchor: [0.5, 0.5],
-                                anchorXUnits: 'fraction',
-                                anchorYUnits: 'fraction',
-                                opacity: 1,
-                                src: 'img/'+icon_name+'.png',
-                                scale:0.5
-                            })),
-                            text: new ol.style.Text({
-                                text: '',
-                                fill: new ol.style.Fill({
-                                    color: '#fff'
-                                })
-                            })
-                        })];
-                        
-                    }
-                    else {
-                        if (!style) {
-                            //Clustering strategy for multiple elements
-                            style = [new ol.style.Style({
-                                image: new ol.style.Circle({
-                                    radius: 10,
-                                    stroke: new ol.style.Stroke({color: '#fff'}),
-                                    fill: new ol.style.Fill({color: '#FFCC00'})
-                                    }),
-                                text: new ol.style.Text({
-                                    text: size.toString(),
-                                    fill: new ol.style.Fill({color: '#fff'})
-                                })
-                            })];
-                            styleCache[size] = style;
-                        }
-                  }
-                  return style;
-                }
-              });
-            
             //defines the map
             map = new ol.Map({
                 target: container,
@@ -100,7 +109,7 @@ var cbmp = {
                     new ol.layer.Tile({
                         source: new ol.source.MapQuest({layer: 'osm'})
                     }),
-                    clusters
+                    clusters[0], clusters[1], clusters[2],clusters[3]
                 ],
                 view:myView
             });
@@ -170,13 +179,16 @@ var cbmp = {
                 xhr.onreadystatechange = function(){
                     if ( xhr.readyState == 4 ){
                         
-                        //delete all previous items in the layer
-                        vectorSource.clear();
+                        //delete all previous items in each layer
+                        for(var i = 0; i<4; i++)vectorsSource[i].clear();
                         
                         //retrieve items
                         var jsonPlaces = eval(xhr.responseText);
                         var olplaces = [];
-        
+                        var types = {};
+                        var indexTypes=0;
+                        var currentType;
+                        
                         var olplace;
                         for(var indexPlaces=0;indexPlaces<jsonPlaces.length; indexPlaces++){
                            
@@ -188,11 +200,26 @@ var cbmp = {
                                 type : jsonPlaces[indexPlaces].type
                             });
                             
-                            //adding the place to the list
-                            olplaces[indexPlaces] = olplace;
+                            currentType = jsonPlaces[indexPlaces].type;
+                            
+                            //if this type doesnot already exists in the array
+                            if (!(currentType in types)) {
+                                //we add it and increment the index
+                                types[currentType] = indexTypes++;
+                                
+                                //bind the dom control with this type
+                                var domcontrol = document.getElementById(currentType+"DomCB");
+                                if (domcontrol) {
+                                    var domcontrolInput = new ol.dom.Input(domcontrol);
+                                    if(domcontrolInput)domcontrolInput.bindTo('checked', clusters[types[currentType]], 'visible');
+                                }
+                            }
+                            
+                            //adding the place to the list corresponding to this type
+                            vectorsSource[types[currentType]].addFeature(olplace);
                         }
                         
-                        vectorSource.addFeatures(olplaces);
+                        //vectorsSource[0].addFeatures(olplaces);
                     }
                 };
                 xhr.send(null);		

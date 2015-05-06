@@ -121,18 +121,34 @@ form > select {
 }
 .nav-open,
 .nav-close {
-	display: none;
-	color: #FFD633;
-	font-size: 1em;
-	font-weight: 400;
-	font-family: "Yanone Kaffeesatz", Arial, Helvetica, sans-serif;
-	text-decoration: none;
-	text-transform: uppercase;
-	line-height: 30px;
-	letter-spacing: 1px;
-	background: #060608;
-        width: 100%;
-	}
+    display: none;
+    color: #FFD633;
+    font-size: 1em;
+    font-weight: 400;
+    font-family: "Yanone Kaffeesatz", Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    line-height: 30px;
+    letter-spacing: 1px;
+    background: #060608;
+    width: 100%;
+}
+        
+.LayersSelector {
+    position: absolute;
+    right:10px;
+    bottom:40px;
+    z-index:100000;
+    background-color: #FFCC00;
+    opacity:0.8;
+}
+
+.LayersSelector > ul{
+    list-style-type: none;
+    margin:3px;
+    padding-left:0px;
+}
+        
         
 /* For Large screen devices only */
 @media only screen and (min-width: 55em) {
@@ -208,6 +224,4 @@ form > select {
         border-radius:10px 10px 10px 10px;
         width:90%;
     }
-   
-
 }
