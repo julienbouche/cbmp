@@ -40,20 +40,18 @@
                 </ul>
             </div>
         </nav>  
-        
     </header>
-    <div class="LayersSelector">
-      <ul>
-        <li><input type="checkbox" selected id="BreweryDomCB" /><label>Brewery</label></li>
-        <li><input type="checkbox" selected id="BrewPubDomCB" /><label>BrewPub</label></li>
-        <li><input type="checkbox" selected id="BarDomCB" /><label>Bar</label></li>
-        <li><input type="checkbox" selected id="CellarDomCB" /><label>Cellar</label></li>
-      </ul>
-    </div>
     <div id="map" class="map">
         <div id="popup"></div>
+        <div class="LayersSelector">
+          <ul>
+            <li><input type="checkbox" selected id="BreweryDomCB" /><label>Brewery</label></li>
+            <li><input type="checkbox" selected id="BrewPubDomCB" /><label>BrewPub</label></li>
+            <li><input type="checkbox" selected id="BarDomCB" /><label>Bar</label></li>
+            <li><input type="checkbox" selected id="CellarDomCB" /><label>Cellar</label></li>
+          </ul>
+        </div>
     </div>
-    
     <script type="text/javascript">
         //create the map
         var carte = new cbmp.CBMap("map");

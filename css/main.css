@@ -7,9 +7,12 @@ html,body{
 
 
 .map {
-    position:absolute;
-    height: 94%;
+    position:relative;
+    
     width: 100%;
+    bottom:0px;
+    margin:0;
+    padding:0;
 }
 
 header{
@@ -94,7 +97,7 @@ header input[type="search"]{
 
 .cbmp-button{
     position:absolute;
-    top:80px;
+    top:8em;
     left:8px;
 }
 
@@ -159,6 +162,9 @@ form > select {
         width:200px;
         transition: all ease 0.5s;
     }
+    .map{
+        height: 94%;
+    }
 }
 
 /* For small screen devices only */
@@ -175,9 +181,15 @@ form > select {
         font-size: large;
         text-align: center;
     }
-    
+    header{
+        position:absolute;
+        z-index: 10000000;
+        left:0px;
+        right:0px;
+    }
     .map{
-        height: 82%;
+        height: 100%;
+        
     }
     .nav-open {
 	display: block;
@@ -224,4 +236,5 @@ form > select {
         border-radius:10px 10px 10px 10px;
         width:90%;
     }
+    
 }
