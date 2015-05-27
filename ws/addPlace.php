@@ -13,17 +13,17 @@
         $id_cat = intval($_POST['type']);
         
         //cleaning, reformating field $website
-        if(strlen($website)>0 && !preg_match("#^http://#i", $website)){
+        if(strlen($website)>0 && !preg_match("#^https?://#i", $website)){
             $website = "http://".$website;
         }
         
         //cleaning, reformating field $facebook
-        if(strlen($facebook)>0 && !preg_match("#^http://#i", $facebook)){
+        if(strlen($facebook)>0 && !preg_match("#^https?://#i", $facebook)){
             $facebook = "http://".$facebook;
         }
         
         //cleaning, reformating field $twitter
-        if(strlen($twitter)>0 && !preg_match("#^http://#i", $twitter)){
+        if(strlen($twitter)>0 && !preg_match("#^https?://#i", $twitter)){
             $twitter = "http://".$twitter;
         }
         
