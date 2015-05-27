@@ -19,11 +19,11 @@ if(isset($_GET['id'])){
         <a href="<?=$row['website']?>" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>
     <?php endif; ?>
     <?php if($row['facebook']) : ?>
-        <a href="<?=$row['facebook']?>"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>
+        <a href="<?=$row['facebook']?>" target="_blank"><img src="img/gemicon/fb32.png" height="20" width="20"/></a>
     <?php endif; ?>
                         
     <?php if($row['twitter'] ) : ?>
-        <a href="<?=$row['twitter']?>"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>
+        <a href="<?=$row['twitter']?>" target="_blank"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>
     <?php endif; ?>
     <div class="description" id="desc'+selectedFeature.get('id')+'"><?=utf8_encode(nl2br($stripslashes($row['description'])))?></div>
     <input type="button" value="Edit" onclick="getEditForm(this,<?=$id?>);" >
