@@ -25,11 +25,6 @@ cbmp.interactions = {
     generateDrawControl : function(map, opt_options){
             var options = opt_options || {};
             var draw_enabled = false;
-
-            var anchor = document.createElement('button');
-            anchor.href = '#addPlace';
-            anchor.innerHTML = 'P';
-            anchor.title = "Add places on the map";
     
             var switchDrawInteraction = function(e) {
                 if (!draw_enabled) {
@@ -44,17 +39,39 @@ cbmp.interactions = {
 
             };
     
-            anchor.addEventListener('click', switchDrawInteraction, false);
-            anchor.addEventListener('touchstart', switchDrawInteraction, false);
-    
-            var element = document.createElement('div');
-            element.className = 'cbmp-button ol-control ol-unselectable';
-            element.appendChild(anchor);
-    
+            var controlContainerDOM = cbmp.interactions.createCustomControl('#addPlace', 'P', "Add places on the map", switchDrawInteraction);
+            
             ol.control.Control.call(this, {
-              element: element,
-              target: options.target
+              element: controlContainerDOM,
+              options: options
             });
+            
+            
+            
+    },
+    
+    createCustomControl : function (href, text, title, clickCallback){
+        var anchor = document.createElement('button');
+        anchor.href = href;
+        anchor.innerHTML = text;
+        anchor.title = title;
+        
+        anchor.addEventListener('click', clickCallback, false);
+        anchor.addEventListener('touchstart', clickCallback, false);
+        
+        var controlContainerDOM = document.getElementById('cmbpControlContainer');
+        
+        if (!controlContainerDOM) {
+            //create the container
+            controlContainerDOM = document.createElement('div');
+            controlContainerDOM.id = "cmbpControlContainer";
+            controlContainerDOM.className = 'cbmp-button ol-control ol-unselectable';
+        }
+        
+        //adds the new control button to the container
+        controlContainerDOM.appendChild(anchor);
+        
+        return controlContainerDOM;
     },
     
     addDrawControl : function(map){
@@ -65,11 +82,6 @@ cbmp.interactions = {
     
     initGeoLocTrackingControl : function(activateCallback, deactivateCallback){
         var geoloc_enabled = false;
-
-        var anchor = document.createElement('button');
-        anchor.href = '#trackme';
-        anchor.innerHTML = 'T';
-        anchor.title = "Track me!";
 
         var switchGeoLocTrackingStateInteraction = function(e) {
             if (!geoloc_enabled) {
@@ -83,17 +95,12 @@ cbmp.interactions = {
             geoloc_enabled = !geoloc_enabled;
 
         };
-
-        anchor.addEventListener('click', switchGeoLocTrackingStateInteraction, false);
-        anchor.addEventListener('touchstart', switchGeoLocTrackingStateInteraction, false);
-
-        var element = document.createElement('div');
-        element.className = 'cbmp-button ol-control ol-unselectable';
-        element.appendChild(anchor);
-
+        
+        var controlContainerDOM = cbmp.interactions.createCustomControl('#trackme', 'T', "Track me!", switchGeoLocTrackingStateInteraction);
         ol.control.Control.call(this, {
-          element: element
-        });
+              element: controlContainerDOM
+            });
+
     },
     
     addGeoLocTrackingControl : function(map){
