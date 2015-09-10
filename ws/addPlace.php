@@ -1,11 +1,12 @@
 <?php
     require_once('../script/db.php');
+    require_once('../script/string.php');
 
     db_connect();
     
     if(isset($_POST['name']) and strlen(trim($_POST['name']))>0 and isset($_POST['type'])){    
-        $name = utf8_decode(mysql_real_escape_string(trim($_POST['name'])));
-        $desc=  utf8_decode(mysql_real_escape_string(trim($_POST['desc'])));
+        $name = utf8_decode(mysql_real_escape_string(stripslashes(trim($_POST['name']))));
+        $desc=  utf8_decode(mysql_real_escape_string(stripslashes(trim($_POST['desc']))));
         $website = mysql_real_escape_string(trim($_POST['website']));
         $facebook = mysql_real_escape_string(trim($_POST['facebook']));
         $twitter =  mysql_real_escape_string(trim($_POST['twitter']));
