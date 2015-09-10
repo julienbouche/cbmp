@@ -51,6 +51,7 @@
             <li><input type="checkbox" selected id="CellarDomCB" /><label>Cellar</label></li>
           </ul>
         </div>
+        
     </div>
     <script type="text/javascript">
         //create the map
@@ -64,6 +65,9 @@
         
         //add the ability to add new place using the mouse
         cbmp.interactions.addDrawControl(carte.getMap());
+        
+        //add geo location tracking feature
+        cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
     </script>
   </body>
 </html>

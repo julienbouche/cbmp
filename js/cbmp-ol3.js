@@ -2,7 +2,10 @@ var cbmp = {
     //constructor
     CBMap : function(containerId){
         var container = containerId;
-        var vectorsSource, map, popup, clusters;
+        var vectorsSource, map, myView, popup, clusters;
+        var geoLocationTrackingEnabled = false;
+        var geolocation;
+        var zoomOnFirstTracking=true;
         
         this.hidePopup = function(){
             if (popup) {
@@ -21,6 +24,84 @@ var cbmp = {
             return map;
         };
         
+        this.activateGeoLocationTracking = function(){
+            geoLocationTrackingEnabled=true;
+            if(geolocation){
+                geolocation.setTracking(geoLocationTrackingEnabled);
+            }
+            
+        };
+        
+        this.deactivateGeoLocationTracking = function(){
+            geoLocationTrackingEnabled=false;
+            if(geolocation) {
+                geolocation.setTracking(geoLocationTrackingEnabled);
+            }
+            
+            //reinit zoom at first geolocation 
+            zoomOnFirstTracking=true;
+        };
+        
+        this.initGeoLocationFeature = function(myView, trackingCheckboxElementID){
+            //add geolocation possibility
+            geolocation = new ol.Geolocation({
+                projection: myView.getProjection()
+            });
+            
+            geolocation.setTracking(geoLocationTrackingEnabled);
+            
+            //create a feature representing location's accuracy
+            var accuracyFeature = new ol.Feature();
+            geolocation.on('change:accuracyGeometry', function() {
+                accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+            });
+
+            //create a feature for the user's position
+            var positionFeature = new ol.Feature();
+            positionFeature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({
+                  color: '#3399CC'
+                }),
+                stroke: new ol.style.Stroke({
+                  color: '#fff',
+                  width: 2
+                    })
+                })
+            }));
+            
+            //handles errors
+            geolocation.on('error', function(error) {
+                alert(error.message);
+            });
+            
+            
+            //handles position changes (recenter map on new position)
+            geolocation.on('change:position', function() {
+                var coordinates = geolocation.getPosition();
+                var geomPoint = new ol.geom.Point(coordinates);
+                positionFeature.setGeometry(coordinates ? geomPoint : null);
+                
+                //center the view on user's location
+                myView.setCenter(coordinates);
+                
+                //zoom only the first position (enables the user to adjust zoom)
+                if (zoomOnFirstTracking) {
+                    //zoom in
+                    myView.setZoom(10);
+                    zoomOnFirstTracking=false;
+                }
+            });
+
+            //adds a new vector with position and accuracy
+            var geolocFeatureOverlay = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [accuracyFeature, positionFeature]
+                })
+            });
+            return geolocFeatureOverlay;
+        }
         
         this.init = function() {
         
@@ -96,10 +177,13 @@ var cbmp = {
             }
             
             //create the view
-            var myView =new ol.View({
+            myView =new ol.View({
                 center: ol.proj.transform([2.34, 48.82], 'EPSG:4326', 'EPSG:3857'), 
                 zoom: 5
             });
+            
+            //enables geolocation tracking
+            var geolocFeatureOverlay = this.initGeoLocationFeature(myView, 'trackme');
             
             
             //defines the map
@@ -109,10 +193,12 @@ var cbmp = {
                     new ol.layer.Tile({
                         source: new ol.source.MapQuest({layer: 'osm'})
                     }),
-                    clusters[0], clusters[1], clusters[2],clusters[3]
+                    clusters[0], clusters[1], clusters[2],clusters[3],
+                    geolocFeatureOverlay 
                 ],
                 view:myView
             });
+            
         
             var element = document.getElementById('popup');
         
@@ -172,6 +258,10 @@ var cbmp = {
             });
         };
         
+        
+        /**
+         * Function to load the places from the server
+         */
         this.load_places = function (url) {
             xhr = createXHR();
             if(xhr!=null) {
