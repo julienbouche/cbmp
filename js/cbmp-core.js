@@ -81,7 +81,7 @@ function sendFormData(form) {
 		//
 		if (form.elements[i].type!='submit') {
 			//add every data from the form as an url encoded string
-			data+=form.elements[i].name+'='+form.elements[i].value+'&';
+			data+=form.elements[i].name+'='+encodeURIComponent(form.elements[i].value)+'&';
 		}
 	}
 	
