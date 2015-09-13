@@ -6,6 +6,7 @@ var cbmp = {
         var geoLocationTrackingEnabled = false;
         var geolocation;
         var zoomOnFirstTracking=true;
+        var NB_PLACES_CATEGORY;
         
         this.hidePopup = function(){
             if (popup) {
@@ -103,16 +104,18 @@ var cbmp = {
             return geolocFeatureOverlay;
         }
         
-        this.init = function() {
         
+        this.init = function() {
+            
             //create layer to add places on
             vectorsSource = {};
             placesLayers = {};
             clusters = [];
             var styleCache = {};
+            NB_PLACES_CATEGORY = 5; //TODO retrieve value from db
             
             //loop for each type of place
-            for(index=0; index < 4; index++){
+            for(index=0; index < NB_PLACES_CATEGORY; index++){
                 //create a vector for each type
                 vectorsSource[index] = new ol.source.Vector({
                     features: [],
@@ -152,7 +155,6 @@ var cbmp = {
                                     })
                                 })
                             })];
-                            
                         }
                         else {
                             if (!style) {
@@ -193,11 +195,16 @@ var cbmp = {
                     new ol.layer.Tile({
                         source: new ol.source.MapQuest({layer: 'osm'})
                     }),
-                    clusters[0], clusters[1], clusters[2],clusters[3],
                     geolocFeatureOverlay 
                 ],
                 view:myView
             });
+            
+            //for each cluster, add it to the map
+            for (var index=0; index<NB_PLACES_CATEGORY; index++) {
+                //code
+                map.addLayer(clusters[index]);
+            }
             
         
             var element = document.getElementById('popup');
@@ -270,7 +277,7 @@ var cbmp = {
                     if ( xhr.readyState == 4 ){
                         
                         //delete all previous items in each layer
-                        for(var i = 0; i<4; i++)vectorsSource[i].clear();
+                        for(var i = 0; i<NB_PLACES_CATEGORY; i++)vectorsSource[i].clear();
                         
                         //retrieve items
                         var jsonPlaces = eval(xhr.responseText);
