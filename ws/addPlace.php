@@ -29,7 +29,7 @@
         }
         
         //inserting new entry
-        if(isset($_POST['id']) and strlen($_POST['id'])>1){
+        if(isset($_POST['id']) and strlen($_POST['id'])>0){
             $id = intval($_POST['id']);
             $sql = "UPDATE place set name='$name', description='$desc', website='$website', id_category=$id_cat, facebook='$facebook', twitter='$twitter' WHERE id=$id";
         }
