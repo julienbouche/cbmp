@@ -1,11 +1,13 @@
 var cbmp = {
     //constructor
     CBMap : function(containerId){
+        var _this = this;
         var container = containerId;
         var vectorsSource, map, myView, popup, clusters;
         var geoLocationTrackingEnabled = false;
         var geolocation;
         var zoomOnFirstTracking=true;
+        var NB_PLACES_CATEGORY;
         
         this.hidePopup = function(){
             if (popup) {
@@ -103,8 +105,42 @@ var cbmp = {
             return geolocFeatureOverlay;
         }
         
-        this.init = function() {
+        this.load_categories =function(menu_dom_element_id, interactionsCallbackFunction){
+            var url = "ws/getCategories.php";
+            var xhr = createXHR();
+            if(xhr!=null) {
+                //defines an asyncrhonous call to the URL url using GET method
+                xhr.open("GET",url, true);
+                
+                
+                xhr.onreadystatechange = function(){ //executed after AJAX response returned
+                    if ( xhr.readyState == 4 ){
+                        var jsonCategories = eval(xhr.responseText);
+                        
+                        //stores the number of places retrieved
+                        NB_PLACES_CATEGORY = jsonCategories.length;
+                        
+                        //@TODO generates the menu
+                        cbmp.interactions.generateLayersMenu(jsonCategories, menu_dom_element_id);
+                        
+                        //launch initialisation of map elements
+                        _this.initLayers();
+                        
+                        //loads places 
+                        _this.load_places("ws/getPlaces.php");
+                        
+                        interactionsCallbackFunction();
+                    }
+                };
+                xhr.send(null);
+            }
+        };
         
+        this.init = function(menu_dom_element_id, interactionsCallbackFunction){
+            this.load_categories(menu_dom_element_id, interactionsCallbackFunction);
+        };
+        
+        this.initLayers = function() {
             //create layer to add places on
             vectorsSource = {};
             placesLayers = {};
@@ -112,7 +148,7 @@ var cbmp = {
             var styleCache = {};
             
             //loop for each type of place
-            for(index=0; index < 4; index++){
+            for(index=0; index < NB_PLACES_CATEGORY; index++){
                 //create a vector for each type
                 vectorsSource[index] = new ol.source.Vector({
                     features: [],
@@ -152,7 +188,6 @@ var cbmp = {
                                     })
                                 })
                             })];
-                            
                         }
                         else {
                             if (!style) {
@@ -183,7 +218,7 @@ var cbmp = {
             });
             
             //enables geolocation tracking
-            var geolocFeatureOverlay = this.initGeoLocationFeature(myView, 'trackme');
+            var geolocFeatureOverlay = _this.initGeoLocationFeature(myView, 'trackme');
             
             
             //defines the map
@@ -193,11 +228,16 @@ var cbmp = {
                     new ol.layer.Tile({
                         source: new ol.source.MapQuest({layer: 'osm'})
                     }),
-                    clusters[0], clusters[1], clusters[2],clusters[3],
                     geolocFeatureOverlay 
                 ],
                 view:myView
             });
+            
+            //for each cluster, add it to the map
+            for (var index=0; index<NB_PLACES_CATEGORY; index++) {
+                //code
+                map.addLayer(clusters[index]);
+            }
             
         
             var element = document.getElementById('popup');
@@ -270,7 +310,7 @@ var cbmp = {
                     if ( xhr.readyState == 4 ){
                         
                         //delete all previous items in each layer
-                        for(var i = 0; i<4; i++)vectorsSource[i].clear();
+                        for(var i = 0; i<NB_PLACES_CATEGORY; i++)vectorsSource[i].clear();
                         
                         //retrieve items
                         var jsonPlaces = eval(xhr.responseText);

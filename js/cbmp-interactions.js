@@ -29,11 +29,11 @@ cbmp.interactions = {
             var switchDrawInteraction = function(e) {
                 if (!draw_enabled) {
                     //code  
-                    cbmp.interactions.enableDrawInteraction(carte.getMap());
+                    cbmp.interactions.enableDrawInteraction(map);
                 }
                 else {
                     //remove draw
-                    cbmp.interactions.disableDrawInteraction(carte.getMap());
+                    cbmp.interactions.disableDrawInteraction(map);
                 }
                 draw_enabled = !draw_enabled;
 
@@ -48,6 +48,37 @@ cbmp.interactions = {
             
             
             
+    },
+    
+    createDOMLayerSelector: function(name){
+        var new_li_element = document.createElement('li');
+        
+        var new_checkbox = document.createElement('input');
+        new_checkbox.type='checkbox';
+        new_checkbox.selected = true;
+        new_checkbox.id = name+'DomCB';
+        
+        new_li_element.appendChild(new_checkbox);
+        
+        var new_label = document.createElement('label');
+        new_label.innerHTML = name;
+        
+        new_li_element.appendChild(new_label);
+        
+        return new_li_element;
+    },
+    
+    generateLayersMenu : function(jsonCategories, menu_dom_element_id){   
+        var menu_dom_element = document.getElementById(menu_dom_element_id);
+        
+        for(var index=0; index<jsonCategories.length; index++){
+            //create an entry for that category
+            var new_selector = cbmp.interactions.createDOMLayerSelector(jsonCategories[index].name);
+            
+            //adds it to the container
+            menu_dom_element.appendChild(new_selector);
+            
+        }
     },
     
     createCustomControl : function (href, text, title, clickCallback){
@@ -76,7 +107,7 @@ cbmp.interactions = {
     
     addDrawControl : function(map){
         ol.inherits(cbmp.interactions.generateDrawControl, ol.control.Control);
-        map.addControl(new cbmp.interactions.generateDrawControl());
+        map.addControl(new cbmp.interactions.generateDrawControl(map));
     },
     
     
@@ -122,5 +153,33 @@ cbmp.interactions = {
             }
             map.addInteraction(cbmp.geoloctracking);
         }
+    },
+    
+    addDragControl : function(map){
+        ol.inherits(cbmp.interactions.generateDragControl, ol.control.Control);
+        map.addControl(new cbmp.interactions.generateDragControl(map));
+    },
+    
+    generateDragControl : function(map){
+        var drag_enabled = false;
+    
+            var switchDragInteraction = function(e) {
+                if (!drag_enabled) {
+                    //code  
+                    cbmp.interactions.enableDragInteraction(map);
+                }
+                else {
+                    //remove draw
+                    cbmp.interactions.disableDragInteraction(map);
+                }
+                drag_enabled = !drag_enabled;
+
+            };
+    
+            var controlContainerDOM = cbmp.interactions.createCustomControl('#drag', 'D', "Drag places", switchDragInteraction);
+            
+            ol.control.Control.call(this, {
+              element: controlContainerDOM
+            });
     }
 };

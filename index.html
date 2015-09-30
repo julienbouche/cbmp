@@ -43,12 +43,8 @@
     </header>
     <div id="map" class="map">
         <div id="popup"></div>
-        <div class="LayersSelector">
-          <ul>
-            <li><input type="checkbox" selected id="BreweryDomCB" /><label>Brewery</label></li>
-            <li><input type="checkbox" selected id="BrewPubDomCB" /><label>BrewPub</label></li>
-            <li><input type="checkbox" selected id="BarDomCB" /><label>Bar</label></li>
-            <li><input type="checkbox" selected id="CellarDomCB" /><label>Cellar</label></li>
+        <div class="LayersSelector" >
+          <ul id="layersListDOM" >
           </ul>
         </div>
         
@@ -58,16 +54,13 @@
         var carte = new cbmp.CBMap("map");
         
         //initialise the map and necessary elements (layers, etc.)
-        carte.init();
+        carte.init('layersListDOM', function() {
+          //add the ability to add new place using the mouse
+          cbmp.interactions.addDrawControl(carte.getMap());
         
-        //load places from DB (JSON format)
-        carte.load_places("ws/getPlaces.php");
-        
-        //add the ability to add new place using the mouse
-        cbmp.interactions.addDrawControl(carte.getMap());
-        
-        //add geo location tracking feature
-        cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
+          //add geo location tracking feature
+          cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
+        });
     </script>
   </body>
 </html>
