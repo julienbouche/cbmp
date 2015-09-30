@@ -1,6 +1,7 @@
 var cbmp = {
     //constructor
     CBMap : function(containerId){
+        var _this = this;
         var container = containerId;
         var vectorsSource, map, myView, popup, clusters;
         var geoLocationTrackingEnabled = false;
@@ -104,15 +105,47 @@ var cbmp = {
             return geolocFeatureOverlay;
         }
         
+        this.load_categories =function(menu_dom_element_id, interactionsCallbackFunction){
+            var url = "ws/getCategories.php";
+            var xhr = createXHR();
+            if(xhr!=null) {
+                //defines an asyncrhonous call to the URL url using GET method
+                xhr.open("GET",url, true);
+                
+                
+                xhr.onreadystatechange = function(){ //executed after AJAX response returned
+                    if ( xhr.readyState == 4 ){
+                        var jsonCategories = eval(xhr.responseText);
+                        
+                        //stores the number of places retrieved
+                        NB_PLACES_CATEGORY = jsonCategories.length;
+                        
+                        //@TODO generates the menu
+                        cbmp.interactions.generateLayersMenu(jsonCategories, menu_dom_element_id);
+                        
+                        //launch initialisation of map elements
+                        _this.initLayers();
+                        
+                        //loads places 
+                        _this.load_places("ws/getPlaces.php");
+                        
+                        interactionsCallbackFunction();
+                    }
+                };
+                xhr.send(null);
+            }
+        };
         
-        this.init = function() {
-            
+        this.init = function(menu_dom_element_id, interactionsCallbackFunction){
+            this.load_categories(menu_dom_element_id, interactionsCallbackFunction);
+        };
+        
+        this.initLayers = function() {
             //create layer to add places on
             vectorsSource = {};
             placesLayers = {};
             clusters = [];
             var styleCache = {};
-            NB_PLACES_CATEGORY = 5; //TODO retrieve value from db
             
             //loop for each type of place
             for(index=0; index < NB_PLACES_CATEGORY; index++){
@@ -185,7 +218,7 @@ var cbmp = {
             });
             
             //enables geolocation tracking
-            var geolocFeatureOverlay = this.initGeoLocationFeature(myView, 'trackme');
+            var geolocFeatureOverlay = _this.initGeoLocationFeature(myView, 'trackme');
             
             
             //defines the map
