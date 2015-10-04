@@ -1,5 +1,7 @@
 var cbmp = {
-    //constructor
+    /**
+     * Definition of the project's Map class
+     */
     CBMap : function(containerId){
         var _this = this;
         var container = containerId;
@@ -9,23 +11,39 @@ var cbmp = {
         var zoomOnFirstTracking=true;
         var NB_PLACES_CATEGORY;
         
+        /**
+         * Function to hide the popup
+         */
         this.hidePopup = function(){
             if (popup) {
                 //code
                 popup.hide();
             }
         }
+        
+        /**
+         * Function to fill popup inner HTML content
+         * @param {String} html the html code to be placed in the form inner HTML
+         */
         this.setPopupContent = function(html){
             if (popup) {
                 //code
                 popup.content.innerHTML = html;
             }
         }
-        //accesser
+        
+        /**
+         * Simple accesser that return the map object
+         * @returns {ol.Map} the object representing the map
+         */
         this.getMap = function(){
             return map;
         };
         
+        
+        /**
+         * Function to turn on geolocation tracking
+         */
         this.activateGeoLocationTracking = function(){
             geoLocationTrackingEnabled=true;
             if(geolocation){
@@ -34,6 +52,9 @@ var cbmp = {
             
         };
         
+        /**
+         * Function to turn off geolocation tracking
+         */
         this.deactivateGeoLocationTracking = function(){
             geoLocationTrackingEnabled=false;
             if(geolocation) {
@@ -44,7 +65,12 @@ var cbmp = {
             zoomOnFirstTracking=true;
         };
         
-        this.initGeoLocationFeature = function(myView, trackingCheckboxElementID){
+        
+        /**
+         * Function that initialize the geolocation feature
+         * @param {ol.View} myView ol objects that represent the view
+         */
+        this.initGeoLocationFeature = function(myView){
             //add geolocation possibility
             geolocation = new ol.Geolocation({
                 projection: myView.getProjection()
@@ -105,6 +131,12 @@ var cbmp = {
             return geolocFeatureOverlay;
         }
         
+        
+        /**
+         * function that loads categories from the backend in json format (ws/getCategories.php)
+         * @param {String} menu_dom_element_id the id of the ul element to loads the menu
+         * @param {Function} interactionsCallbackFunction function to be called after categories have been retrieved
+         */
         this.load_categories =function(menu_dom_element_id, interactionsCallbackFunction){
             var url = "ws/getCategories.php";
             var xhr = createXHR();
@@ -120,15 +152,10 @@ var cbmp = {
                         //stores the number of places retrieved
                         NB_PLACES_CATEGORY = jsonCategories.length;
                         
-                        //@TODO generates the menu
+                        //generates the menu
                         cbmp.interactions.generateLayersMenu(jsonCategories, menu_dom_element_id);
                         
-                        //launch initialisation of map elements
-                        _this.initLayers();
-                        
-                        //loads places 
-                        _this.load_places("ws/getPlaces.php");
-                        
+                        //calls the callback functions after retrieving elements
                         interactionsCallbackFunction();
                     }
                 };
@@ -136,10 +163,29 @@ var cbmp = {
             }
         };
         
+        /**
+         * Overall init function
+         * @param {String} menu_dom_element_id the id of the ul element to loads the menu
+         * @param {Function} interactionsCallbackFunction function to be called after required initialisation
+         */
         this.init = function(menu_dom_element_id, interactionsCallbackFunction){
-            this.load_categories(menu_dom_element_id, interactionsCallbackFunction);
+            //this.load_categories(menu_dom_element_id, );
+            this.load_categories(menu_dom_element_id, function(){
+                        //launch initialisation of map elements
+                        _this.initLayers();
+                        
+                        //loads places 
+                        _this.load_places("ws/getPlaces.php");
+                        
+                        //calls the callback function
+                        interactionsCallbackFunction();
+            })
         };
         
+        
+        /**
+         * Internal init function that initialise layers, map options, clustering strategy, etc.
+         */
         this.initLayers = function() {
             //create layer to add places on
             vectorsSource = {};
@@ -218,7 +264,7 @@ var cbmp = {
             });
             
             //enables geolocation tracking
-            var geolocFeatureOverlay = _this.initGeoLocationFeature(myView, 'trackme');
+            var geolocFeatureOverlay = _this.initGeoLocationFeature(myView);
             
             
             //defines the map
@@ -300,7 +346,8 @@ var cbmp = {
         
         
         /**
-         * Function to load the places from the server
+         * Function to load the places from the backend page in JSON format
+         * @param {String} url the url from where to load places
          */
         this.load_places = function (url) {
             xhr = createXHR();

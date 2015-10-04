@@ -54,6 +54,7 @@
         var carte = new cbmp.CBMap("map");
         
         //initialise the map and necessary elements (layers, etc.)
+        //uses a callback function to add every options (after initialisation)
         carte.init('layersListDOM', function() {
           //add the ability to add new place using the mouse
           cbmp.interactions.addDrawControl(carte.getMap());
