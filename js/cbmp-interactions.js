@@ -74,6 +74,7 @@ cbmp.interactions = {
         new_checkbox.type='checkbox';
         new_checkbox.selected = true;
         new_checkbox.id = name+'DomCB';
+        new_checkbox.checked = true;
         
         new_li_element.appendChild(new_checkbox);
         
