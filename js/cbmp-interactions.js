@@ -2,12 +2,13 @@
 var cbmp = cbmp || {};
 cbmp.draw;
 cbmp.geoloctracking;
+cbmp.urlParams;
 
 /**
  * Library of function to activate interactions
  */
 cbmp.interactions = {
-    
+
     /**
      * Function to turn on the functionnality to add new places on the map
      * @param {ol.Map} map the openlayers object representing the map
@@ -180,5 +181,62 @@ cbmp.interactions = {
     addGeoLocTrackingControl : function(map){
         ol.inherits(cbmp.interactions.initGeoLocTrackingControl, ol.control.Control);
         map.addControl(new cbmp.interactions.initGeoLocTrackingControl(carte.activateGeoLocationTracking, carte.deactivateGeoLocationTracking));
+    },
+    
+    loadPositionFromURL : function(llParamName, lgParamName, zParamName, callback){
+        //parse query params
+        cbmp.interactions.parseLocationParameters();
+        
+        //read values 
+        cbmp.llValue = cbmp.interactions.getParameterValueFromURL(llParamName);
+        cbmp.lgValue = cbmp.interactions.getParameterValueFromURL(lgParamName);
+        cbmp.zValue = cbmp.interactions.getParameterValueFromURL(zParamName);
+        
+        //if all properties have a value
+        if (undefined!=cbmp.llValue && undefined!=cbmp.lgValue && undefined!=cbmp.zValue) {
+            //call the function with the values
+            callback(cbmp.llValue, cbmp.lgValue, cbmp.zValue);
+        }
+    },
+    
+    parseLocationParameters : function(){
+        cbmp.urlParams = {};
+        location.search.substr(1).split("&").forEach(function(item) {
+            var s = item.split("="),
+                k = s[0],
+                v = s[1] && decodeURIComponent(s[1]);
+            (k in cbmp.urlParams) ? cbmp.urlParams[k].push(v) : cbmp.urlParams[k] = [v]
+        })  
+    },
+    
+    getParameterValueFromURL : function (paramName){
+        return cbmp.urlParams[paramName];
+    },
+    
+    keepURLUpToDateWithLocation:function(llParamName, lgParamName, zParamName, map){
+        
+        //event to detect zoom in or out
+        map.getView().on('change:resolution', function(evt){
+            cbmp.interactions.reloadPositionParamsEvent(evt, llParamName, lgParamName, zParamName, map);    
+        });
+        
+        map.getView().on('change:center', function(evt){
+            cbmp.interactions.reloadPositionParamsEvent(evt, llParamName, lgParamName, zParamName, map);
+        });
+    },
+    
+    reloadPositionParamsEvent : function (evt, llParamName, lgParamName, zParamName, map){
+            console.log('event fired : ');
+            //get center position object [lg,ll]
+            var coordinates = map.getView().getCenter();
+            
+            //fires url rewriting (without reloading page)
+            cbmp.interactions.writeURLQueryParameters(llParamName, coordinates[1], lgParamName, coordinates[0], zParamName, map.getView().getZoom());
+    },
+    
+    
+    writeURLQueryParameters : function(llParamName, llValue, lgParamName, lgValue, zParamName, zValue){
+        //rewrite entire url
+        window.history.replaceState('', document.title, '?'+llParamName+"="+llValue+'&'+lgParamName+'='+lgValue+'&'+zParamName+'='+zValue);
     }
 };

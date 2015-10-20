@@ -61,6 +61,13 @@
         
           //add geo location tracking feature
           cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
+          
+          //enable centering map based on url params
+          cbmp.interactions.loadPositionFromURL('ll', 'lg', 'z', carte.adjustView);
+          
+          //update url whenever the view is changed
+          cbmp.interactions.keepURLUpToDateWithLocation('ll', 'lg', 'z', carte.getMap());
+          
         });
     </script>
   </body>

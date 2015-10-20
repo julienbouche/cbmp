@@ -40,6 +40,20 @@ var cbmp = {
             return map;
         };
         
+        /**
+         * Function to adapt zoom and center of the view to the given parameters
+         * @param {Integer} ll latitude
+         * @param {Integer} lg longitude
+         * @param {Integer} zoom zoom level
+         */
+        this.adjustView= function(ll, lg, zoom){
+            //set zoom
+            myView.setZoom(zoom);
+            
+            //centers map
+            myView.setCenter([lg,ll]);
+                
+        };
         
         /**
          * Function to turn on geolocation tracking
