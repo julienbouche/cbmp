@@ -42,6 +42,21 @@ var cbmp = {
         
         
         /**
+         * Function to adapt zoom and center of the view to the given parameters
+         * @param {Integer} ll latitude
+         * @param {Integer} lg longitude
+         * @param {Integer} zoom zoom level
+         */
+        this.adjustView= function(ll, lg, zoom){
+            //set zoom
+            myView.setZoom(zoom);
+            
+            //centers map
+            myView.setCenter([lg,ll]);
+                
+        };
+        
+        /**
          * Function to turn on geolocation tracking
          */
         this.activateGeoLocationTracking = function(){
@@ -169,7 +184,6 @@ var cbmp = {
          * @param {Function} interactionsCallbackFunction function to be called after required initialisation
          */
         this.init = function(menu_dom_element_id, interactionsCallbackFunction){
-            
             this.load_categories(menu_dom_element_id, function(){
                         //launch initialisation of map elements
                         _this.initLayers();
