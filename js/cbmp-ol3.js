@@ -400,17 +400,25 @@ var cbmp = {
                                 
                                 //bind the dom control with this type
                                 var domcontrol = document.getElementById(currentType+"DomCB");
-                                if (domcontrol) {
-                                    var domcontrolInput = new ol.dom.Input(domcontrol);
-                                    if(domcontrolInput)domcontrolInput.bindTo('checked', clusters[types[currentType]], 'visible');
+                                if (domcontrol != undefined) {
+                                    //on définit le type d'éléments que va contenir le cluster
+                                    clusters[types[currentType]].set('name', currentType);
+                                    
+                                    domcontrol.addEventListener('change', function(evt){
+                                        for (var indexCluster=0; indexCluster<clusters.length; indexCluster++) {
+                                            //on recherche le bon cluster à activer/désactiver
+                                            if (clusters[indexCluster].get('name') == this.id.substr(0,this.id.length-5)) {
+                                                clusters[indexCluster].setVisible(this.checked);
+                                            }
+                                        }
+                                        
+                                    });
                                 }
                             }
                             
                             //adding the place to the list corresponding to this type
                             vectorsSource[types[currentType]].addFeature(olplace);
                         }
-                        
-                        //vectorsSource[0].addFeatures(olplaces);
                     }
                 };
                 xhr.send(null);		
