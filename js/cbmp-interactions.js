@@ -184,6 +184,16 @@ cbmp.interactions = {
         map.addControl(new cbmp.interactions.initGeoLocTrackingControl(carte.activateGeoLocationTracking, carte.deactivateGeoLocationTracking));
     },
     
+    
+    /**
+     * Function that moves the view to the position using query parameters
+     * @param {String} llParamName the name corresponding to the latitude param in the query params
+     * @param {String} lgParamName the name corresponding to the longitude param in the query params
+     * @param {String} zParamName the name corresponding to the zoom level param in the query params
+     * @param {Function} callback callback function to trigger the update using parameters values
+     * 
+     *
+     */
     loadPositionFromURL : function(llParamName, lgParamName, zParamName, callback){
         //parse query params
         cbmp.interactions.parseLocationParameters();
@@ -200,6 +210,9 @@ cbmp.interactions = {
         }
     },
     
+    /**
+     *
+     */
     parseLocationParameters : function(){
         cbmp.urlParams = {};
         location.search.substr(1).split("&").forEach(function(item) {
@@ -210,24 +223,39 @@ cbmp.interactions = {
         })  
     },
     
+    /**
+     * Function that returns the value if exists from the query parameters name
+     * @param {String} paramName the name of the query parameter
+     * @return the value 
+     */
     getParameterValueFromURL : function (paramName){
         return cbmp.urlParams[paramName];
     },
     
+    /**
+     * Function to initialize event to keep the url up-to-date
+     * @param {String} llParamName the name corresponding to the latitude param in the query params that will be updated
+     * @param {String} lgParamName the name corresponding to the longitude param in the query params that will be updated
+     * @param {String} zParamName the name corresponding to the zoom level param in the query params that will be updated
+     * @param {ol.Map} map the openlayers map object from which we listen events
+     */
     keepURLUpToDateWithLocation:function(llParamName, lgParamName, zParamName, map){
         
-        //event to detect zoom in or out
-        map.getView().on('change:resolution', function(evt){
-            cbmp.interactions.reloadPositionParamsEvent(evt, llParamName, lgParamName, zParamName, map);    
-        });
-        
-        map.getView().on('change:center', function(evt){
+        //event to detect zoom (in and out) and movement
+        map.on('moveend', function(evt){
             cbmp.interactions.reloadPositionParamsEvent(evt, llParamName, lgParamName, zParamName, map);
         });
     },
     
+    /**
+     * Function triggered to update query params
+     * @param evt the source event
+     * @param {String} llParamName the name corresponding to the latitude param in the query params that will be updated
+     * @param {String} lgParamName the name corresponding to the longitude param in the query params that will be updated
+     * @param {String} zParamName the name corresponding to the zoom level param in the query params that will be updated
+     * @param {ol.Map} map the openlayers map from where to get new values (position & zoom)
+     */
     reloadPositionParamsEvent : function (evt, llParamName, lgParamName, zParamName, map){
-            console.log('event fired : ');
             //get center position object [lg,ll]
             var coordinates = map.getView().getCenter();
             
@@ -235,7 +263,15 @@ cbmp.interactions = {
             cbmp.interactions.writeURLQueryParameters(llParamName, coordinates[1], lgParamName, coordinates[0], zParamName, map.getView().getZoom());
     },
     
-    
+    /**
+     * Function that updates url query parameters
+     * @param {String} llParamName the name corresponding to the latitude param in the query params that will be updated
+     * @param {String} llValue the new value of the llParamName query param
+     * @param {String} lgParamName the name corresponding to the longitude param in the query params that will be updated
+     * @param {String} lgValue the new value of the lgParamName query param
+     * @param {String} zParamName the name corresponding to the zoom level param in the query params that will be updated
+     * @param {String} zValue the new value of the zParamName query param
+     */
     writeURLQueryParameters : function(llParamName, llValue, lgParamName, lgValue, zParamName, zValue){
         //rewrite entire url
         window.history.replaceState('', document.title, '?'+llParamName+"="+llValue+'&'+lgParamName+'='+lgValue+'&'+zParamName+'='+zValue);
