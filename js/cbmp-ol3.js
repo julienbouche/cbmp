@@ -305,8 +305,12 @@ var cbmp = {
             //add an element to manage information popups     
             popup = new ol.Overlay.Popup({
                 element: element,
-                positioning: 'bottom-center',
-                stopEvent: false
+                /*positioning: 'bottom-center',
+                stopEvent: false*/
+                autoPan:true,
+                autoPanAnimation:{
+                    duration:250
+                }
             });
             map.addOverlay(popup);
             
@@ -320,7 +324,7 @@ var cbmp = {
                 if (feature) { //if element exists, show infos from it
                     //get the position
                     var geometry = feature.getGeometry();
-                    var coord = geometry.getCoordinates();
+                    var coord = evt.coordinate; 
                     popup.setPosition(coord);
                     
                     if (feature.get('features') && feature.get('features').length==1 && feature.get('features')[0].get("name")) {//there is an existing place where the user clicked     
