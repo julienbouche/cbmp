@@ -1,0 +1,58 @@
+
+ul.form {
+    list-style-type: none;
+}
+
+ul.form label{
+    width:150px;
+    display: inline-block;
+    float:left;
+    padding:4px;
+}
+ul.form input,select{
+    width:220px;
+    padding:5px 8px;
+}
+ul.form select{
+    width:242px;
+}
+
+
+/***************
+ *
+ * Login page
+ **************/
+
+form.loginbox {
+    margin:auto;
+    width: 300px;
+    top:30%;
+    background-color: #F7D85D;
+    border:1px dotted #FFCC00;
+    position:relative;
+    padding:10px;
+}
+
+form.loginbox label{
+    width:150px;
+    display:inline-block;
+    float:left;
+    padding:4px;
+}
+
+form.loginbox li{
+    display: inline-block;
+}
+form.loginbox input[type="text"], input[type="password"]{
+    /*width:150px;*/
+    padding:5px 8px;
+}
+form.loginbox input[type="checkbox"]{
+    width:10px;
+}
+
+form.loginbox input[type="submit"]{
+    margin:auto;
+    width:200px;
+    padding:5px 8px;
+}
