@@ -9,7 +9,7 @@ $settings = new CBMPSettings();
 $cbmpTitlePage = $settings->getSettingValue("cbmp_application_title");
 
 if(strlen(trim($cbmpTitlePage))==0){
-  $cbmpTitlePage = htmlentities(CBMPSettings::DEFAULT_TITLE);
+  $cbmpTitlePage = htmlentities(CBMPSettings::$DEFAULT_TITLE);
 }
 
 ?>
