@@ -69,7 +69,9 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
           <li>
             <label for="cbmp_application_baselayer">Base Layer : </label>
             <select name="cbmp_application_baselayer">
-              <option value="osm">OSM</option>
+              <option value="osm" <?="osm"==$settings->getSettingValue("cbmp_application_baselayer")?"selected":""?>>Roads (OSM)</option>
+              <option value="sat" <?="sat"==$settings->getSettingValue("cbmp_application_baselayer")?"selected":""?>>Satellite (OSM)</option>
+              <option value="hyb" <?="hyb"==$settings->getSettingValue("cbmp_application_baselayer")?"selected":""?>>Hybrid (OSM)</option>
             </select>
           </li>
           <li>

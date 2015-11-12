@@ -10,6 +10,7 @@ var cbmp = {
         var geolocation;
         var zoomOnFirstTracking=true;
         var NB_PLACES_CATEGORY;
+        var settingsMap;
         
         /**
          * Function to hide the popup
@@ -152,14 +153,12 @@ var cbmp = {
          * @param {String} menu_dom_element_id the id of the ul element to loads the menu
          * @param {Function} interactionsCallbackFunction function to be called after categories have been retrieved
          */
-        this.load_categories =function(menu_dom_element_id, interactionsCallbackFunction){
+        this.load_categories = function(menu_dom_element_id, interactionsCallbackFunction){
             var url = "ws/getCategories.php";
             var xhr = createXHR();
             if(xhr!=null) {
                 //defines an asyncrhonous call to the URL url using GET method
                 xhr.open("GET",url, true);
-                
-                
                 xhr.onreadystatechange = function(){ //executed after AJAX response returned
                     if ( xhr.readyState == 4 ){
                         var jsonCategories = eval(xhr.responseText);
@@ -184,7 +183,8 @@ var cbmp = {
          * @param {Function} interactionsCallbackFunction function to be called after required initialisation
          */
         this.init = function(menu_dom_element_id, interactionsCallbackFunction){
-            this.load_categories(menu_dom_element_id, function(){
+            this.loadSettings("ws/getSettings.php", function(){
+                    _this.load_categories(menu_dom_element_id, function(){
                         //launch initialisation of map elements
                         _this.initLayers();
                         
@@ -193,7 +193,35 @@ var cbmp = {
                         
                         //calls the callback function
                         interactionsCallbackFunction();
-            })
+                    });
+                }
+            );
+        };
+        
+        
+        /**
+         * Function to load application settings from the database
+         * @param {String} url the url that will return the list of settings (JSON)
+         * @param {Function} callbackFct function to be called after response received
+         */
+        this.loadSettings = function(url, callbackFct){
+            xhr = createXHR();
+            if(xhr!=null) {
+                xhr.open("GET",url, true);
+                xhr.onreadystatechange = function(){
+                    if ( xhr.readyState == 4 ){
+                        try{
+                            settingsMap = eval(xhr.responseText);
+                            callbackFct();
+                        }
+                        catch(err){
+                            alert("An error occured while reading settings from server :"+err);
+                        }
+                    }
+                    
+                };
+            }
+            xhr.send(null);
         };
         
         
@@ -281,13 +309,48 @@ var cbmp = {
             var geolocFeatureOverlay = _this.initGeoLocationFeature(myView);
             
             
+            //load setting for map layer
+            var mapLayerSource;
+            
+            
+            if (settingsMap != undefined && settingsMap.cbmp_application_baselayer != undefined){
+                //code
+                switch(settingsMap.cbmp_application_baselayer){
+                    case "osm":
+                        mapLayerSource = new ol.layer.Tile({
+                            source: new ol.source.MapQuest({layer: settingsMap.cbmp_application_baselayer})
+                        });
+                        break;
+                    case "sat" :
+                        mapLayerSource = new ol.layer.Tile({
+                            source: new ol.source.MapQuest({layer: settingsMap.cbmp_application_baselayer})
+                        });
+                        break;
+                    case "hyb" :
+                        mapLayerSource = new ol.layer.Group({
+                            style: 'AerialWithLabels',
+                            layers: [
+                              new ol.layer.Tile({
+                                source: new ol.source.MapQuest({layer: 'sat'})
+                              }),
+                              new ol.layer.Tile({
+                                source: new ol.source.MapQuest({layer: 'hyb'})
+                              })
+                            ]
+                          });
+                        break;
+                }
+            }
+            else {//default value
+                mapLayerSource = new ol.layer.Tile({
+                    source: new ol.source.MapQuest({layer: "osm"})
+                });
+            }
             //defines the map
             map = new ol.Map({
                 target: container,
                 layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.MapQuest({layer: 'osm'})
-                    }),
+                    mapLayerSource,
                     geolocFeatureOverlay 
                 ],
                 view:myView

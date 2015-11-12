@@ -1,8 +1,8 @@
 <?php
-require_once('../script/db.php');
 
 class CBMPSettings {
     const DEFAULT_TITLE = "<Title.page>";
+    const DEFAULT_MAP_LAYER_SOURCE = "osm";
     
     private $params;
     
@@ -22,6 +22,8 @@ class CBMPSettings {
                 $this->params[$row['name']] = array();
                 $this->params[$row['name']][0] = $row["id"];
                 $this->params[$row['name']][1] = $row["value"];
+                
+                //error_log("list add key ".$row['name']." value '".$row['value']."'");
             }
         }    
     }
