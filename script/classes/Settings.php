@@ -1,8 +1,8 @@
 <?php
 
 class CBMPSettings {
-    const DEFAULT_TITLE = "<Title.page>";
-    const DEFAULT_MAP_LAYER_SOURCE = "osm";
+    public static $DEFAULT_TITLE = "<Title.page>";
+    public static $DEFAULT_MAP_LAYER_SOURCE = "osm";
     
     private $params;
     
@@ -21,9 +21,7 @@ class CBMPSettings {
             while($row = mysql_fetch_assoc($result)){
                 $this->params[$row['name']] = array();
                 $this->params[$row['name']][0] = $row["id"];
-                $this->params[$row['name']][1] = $row["value"];
-                
-                //error_log("list add key ".$row['name']." value '".$row['value']."'");
+                $this->params[$row['name']][1] = $row["value"];                
             }
         }    
     }
@@ -44,8 +42,7 @@ class CBMPSettings {
         $value = trim(mysql_real_escape_string($value));
         if($name!=''){
             $sql= "INSERT INTO config(name, value) VALUES('$name', '$value')";
-            error_log("creating new setting : $sql");
-        
+            
             mysql_query($sql);
             
             //on recharge les valeurs pour être sûr de la synchro DB/RAM: nécessaire?
