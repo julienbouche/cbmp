@@ -1,3 +1,18 @@
+<?php
+require_once('script/db.php');
+require_once('script/classes/Settings.php');
+
+db_connect();
+$settings = new CBMPSettings();
+
+//construct the title page
+$cbmpTitlePage = $settings->getSettingValue("cbmp_application_title");
+
+if(strlen(trim($cbmpTitlePage))==0){
+  $cbmpTitlePage = htmlentities(CBMPSettings::DEFAULT_TITLE);
+}
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,7 +31,7 @@
     
     <script src="js/autocomplete.js" type="text/javascript"></script>
     <link rel="stylesheet" href="css/autocomplete.css" type="text/css">
-    <title>The Craft Beer Map Project</title>
+    <title><?=$cbmpTitlePage?></title>
   </head>
   <body>
     <header><input type="search" placeholder="search" class="autoCompletionTextBox"
@@ -28,7 +43,7 @@
 		<ul id="placesList">
 		</ul>
 	</div>
-        <h1>Craft Beer Map Project</h1>
+        <h1><?=$cbmpTitlePage?></h1>
         
         <nav id="main-navigation" class="main-navigation">
             <a href="#main-navigation" class="nav-open">Menu</a>
