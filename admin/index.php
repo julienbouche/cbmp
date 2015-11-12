@@ -75,7 +75,12 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
             </select>
           </li>
           <li>
-            
+            <label for="cbmp_application_maxZoom">Max Zoom Level : </label>
+            <input type="number" name="cbmp_application_maxZoom" min=0 max=28 value="<?=$settings->getSettingValue('cbmp_application_maxZoom')?>"/>
+          </li>
+          <li>
+            <label for="cbmp_application_minZoom">Min Zoom Level : </label>
+            <input type="number" name="cbmp_application_minZoom" min=0 max=28 value="<?=$settings->getSettingValue('cbmp_application_minZoom')?>"/>
           </li>
         </ul>
         

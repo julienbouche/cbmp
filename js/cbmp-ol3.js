@@ -299,10 +299,38 @@ var cbmp = {
               });
             }
             
+            
+            var minZoomSetting, maxZoomSetting;
+            if (settingsMap != undefined ){
+                if (settingsMap.cbmp_application_minZoom != undefined) {
+                    try{
+                        minZoomSetting = parseInt(settingsMap.cbmp_application_minZoom);
+                    }
+                    catch(e){
+                        alert(e);
+                        minZoomSetting = 0;
+                    }
+                }
+                else minZoomSetting = 0;
+                
+                if (settingsMap.cbmp_application_maxZoom != undefined) {
+                    try {
+                        maxZoomSetting = parseInt(settingsMap.cbmp_application_maxZoom);     
+                    } catch(e) {
+                        alert(e);
+                        maxZoomSetting = 28;
+                    }
+                    
+                }
+                else maxZoomSetting = 28;
+            }
+            
             //create the view
             myView =new ol.View({
                 center: ol.proj.transform([2.34, 48.82], 'EPSG:4326', 'EPSG:3857'), 
-                zoom: 5
+                zoom: 5,
+                minZoom:minZoomSetting,
+                maxZoom:maxZoomSetting
             });
             
             //enables geolocation tracking
