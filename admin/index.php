@@ -106,6 +106,13 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
               <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_geotrack")?"selected":""?>>Disabled</option>
             </select>
           </li>
+          <li>
+            <label for="cbmp_application_urlgeoparams">Update URL with geolocation params : </label>
+            <select name="cbmp_application_urlgeoparams">
+              <option value="enabled"  <?="enabled"==$settings->getSettingValue("cbmp_application_urlgeoparams")?"selected":""?>>Enabled</option>
+              <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_urlgeoparams")?"selected":""?>>Disabled</option>
+            </select>
+          </li>
         </ul>
         <input type="submit" value="SAVE" />
       </form>
