@@ -224,6 +224,17 @@ var cbmp = {
             xhr.send(null);
         };
         
+        this.getSettingValue = function(param_name){
+            if (settingsMap != undefined) {
+                if (settingsMap[param_name] != undefined) {
+                    return settingsMap[param_name];
+                }
+            }
+            
+            //default return value
+            return "";
+        };
+        
         
         /**
          * Internal init function that initialise layers, map options, clustering strategy, etc.
