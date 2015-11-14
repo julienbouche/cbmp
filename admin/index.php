@@ -87,6 +87,16 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
             <input type="number" name="cbmp_application_minZoom" min=0 max=28 value="<?=$settings->getSettingValue('cbmp_application_minZoom')?>"/>
           </li>
         </ul>
+        <h1>Authoring</h1>
+        <ul class="form">
+          <li>
+            <label for="cbmp_application_NewLocation">New location : </label>
+            <select name="cbmp_application_NewLocation">
+              <option value="enabled"  <?="enabled"==$settings->getSettingValue("cbmp_application_NewLocation")?"selected":""?>>Enabled</option>
+              <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_NewLocation")?"selected":""?>>Disabled</option>
+            </select>
+          </li>
+        </ul>
         
         <input type="submit" value="SAVE" />
       </form>
