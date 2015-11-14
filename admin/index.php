@@ -97,7 +97,16 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
             </select>
           </li>
         </ul>
-        
+        <h1>User</h1>
+        <ul class="form">
+          <li>
+            <label for="cbmp_application_geotrack">GeoTracking : </label>
+            <select name="cbmp_application_geotrack">
+              <option value="enabled"  <?="enabled"==$settings->getSettingValue("cbmp_application_geotrack")?"selected":""?>>Enabled</option>
+              <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_geotrack")?"selected":""?>>Disabled</option>
+            </select>
+          </li>
+        </ul>
         <input type="submit" value="SAVE" />
       </form>
     </article>
