@@ -71,14 +71,17 @@ if(strlen(trim($cbmpTitlePage))==0){
         //initialise the map and necessary elements (layers, etc.)
         //uses a callback function to add every options (after initialisation)
         carte.init('layersListDOM', function() {
+	  
 	  if (carte.getSettingValue("cbmp_application_NewLocation") == "enabled") {
 	    //add the ability to add new place using the mouse
 	    cbmp.interactions.addDrawControl(carte.getMap());
 	  }
           
-          //add geo location tracking feature
-          cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
-          
+	  if (carte.getSettingValue("cbmp_application_geotrack") == "enabled") {
+	    //add geo location tracking feature
+	    cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
+	  }
+	  
           //enable centering map based on url params
           cbmp.interactions.loadPositionFromURL('ll', 'lg', 'z', carte.adjustView);
           
