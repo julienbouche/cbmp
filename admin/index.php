@@ -54,9 +54,10 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
         </nav>
     </header>
     
-    <h1>Main</h1>
+    
     <article>
       <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
+        <h1>Main</h1>
         <ul class="form">
           <li>
             <label for="cbmp_application_baseurl">Base URL:</label>
@@ -66,6 +67,9 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
             <label for="cbmp_application_title">Title:</label>
             <input type="text" name="cbmp_application_title" value="<?=$settings->getSettingValue('cbmp_application_title')?>"/>
           </li>
+        </ul>
+        <h1>Map's Display</h1>
+        <ul class="form">
           <li>
             <label for="cbmp_application_baselayer">Base Layer : </label>
             <select name="cbmp_application_baselayer">
