@@ -82,11 +82,13 @@ if(strlen(trim($cbmpTitlePage))==0){
 	    cbmp.interactions.addGeoLocTrackingControl(carte.getMap());
 	  }
 	  
-          //enable centering map based on url params
-          cbmp.interactions.loadPositionFromURL('ll', 'lg', 'z', carte.adjustView);
+	  if (carte.getSettingValue("cbmp_application_urlgeoparams")=="enabled") {
+	    //enable centering map based on url params
+	    cbmp.interactions.loadPositionFromURL('ll', 'lg', 'z', carte.adjustView);
           
-          //update url whenever the view is changed
-          cbmp.interactions.keepURLUpToDateWithLocation('ll', 'lg', 'z', carte.getMap());
+	    //update url whenever the view is changed
+	    cbmp.interactions.keepURLUpToDateWithLocation('ll', 'lg', 'z', carte.getMap());
+	  }
           
         });
     </script>
