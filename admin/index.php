@@ -47,14 +47,20 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
             <a href="#" class="nav-close">Close</a>
             <div id="main-menu">
                 <ul>
-                    <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/index.html">The Map</a></li>
+                    <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/index.php">The Map</a></li>
                     <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/project.html">The Project</a></li>
                 </ul>
             </div>
         </nav>
     </header>
-    
-    
+    <nav class="admin-navigation">
+      <div class="admin-menu">
+          <ul>
+              <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/admin/index.php">Main</a></li>
+              <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/admin/acl.php">Users & Groups</a></li>
+          </ul>
+      </div>
+    </nav>
     <article>
       <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
         <h1>Main</h1>
