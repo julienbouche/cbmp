@@ -1,9 +1,12 @@
 <?php
 require_once('script/db.php');
 require_once('script/string.php');
+require_once('script/classes/Settings.php');
+
+db_connect();
+$settings = new CBMPSettings();
 
 if(isset($_GET['id'])){
-    db_connect();
     $id = intval($_GET['id']);
     $sql_query = "SELECT DISTINCT place.id as id, place.name as placeName, lat, lng, description, website, facebook, twitter, category.name as category FROM place, category WHERE place.id_category=category.id AND place.id=$id";
     $result= mysql_query($sql_query);
@@ -26,8 +29,10 @@ if(isset($_GET['id'])){
         <a href="<?=$row['twitter']?>" target="_blank"><img src="img/gemicon/twitter32.png" height="20" width="20"/></a>
     <?php endif; ?>
     <div class="description" id="desc'+selectedFeature.get('id')+'"><?=utf8_encode(nl2br($stripslashes($row['description'])))?></div>
+    <?php if($settings->getSettingValue('cbmp_application_EditLocation')=='enabled') : ?>
     <input type="button" value="Edit" onclick="getEditForm(this,<?=$id?>);" >
     <input type="button" value="Delete" onclick="deletePlace('<?=htmlspecialchars(addslashes($stripslashes(utf8_encode($row['placeName']))))?>',<?=$id?>);"/>
+    <?php endif; ?>
 </div>
 <?php
     }

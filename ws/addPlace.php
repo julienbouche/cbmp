@@ -1,9 +1,12 @@
 <?php
     require_once('../script/db.php');
     require_once('../script/string.php');
-
+    require_once('../script/classes/Settings.php');
+    
     db_connect();
     
+    $settings = new CBMPSettings();
+
     if(isset($_POST['name']) and strlen(trim($_POST['name']))>0 and isset($_POST['type'])){    
         $name = utf8_decode(mysql_real_escape_string(stripslashes(trim($_POST['name']))));
         $desc=  utf8_decode(mysql_real_escape_string(stripslashes(trim($_POST['desc']))));
@@ -30,8 +33,11 @@
         
         //inserting new entry
         if(isset($_POST['id']) and strlen($_POST['id'])>0){
-            $id = intval($_POST['id']);
-            $sql = "UPDATE place set name='$name', description='$desc', website='$website', id_category=$id_cat, facebook='$facebook', twitter='$twitter' WHERE id=$id";
+            //we verify if editing is enable
+            if($settings->getSettingValue('cbmp_application_EditLocation')=='enabled'){
+                $id = intval($_POST['id']);
+                $sql = "UPDATE place set name='$name', description='$desc', website='$website', id_category=$id_cat, facebook='$facebook', twitter='$twitter' WHERE id=$id";
+            }
         }
         else{
             //extract coordinates only if insert a new place
