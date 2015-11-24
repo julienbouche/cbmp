@@ -59,3 +59,27 @@ form.loginbox input[type="submit"]{
     width:200px;
     padding:5px 8px;
 }
+
+/*****************
+ *
+ *Categories
+ ***************/
+ul.categoryListing{
+    list-style-type: none;
+}
+
+ul.categoryListing form{
+    border-bottom: 1px dashed #aaa;
+    margin-bottom: 10px;
+}
+
+ul.categoryListing img{
+    border: 1px solid #aaa;
+}
+
+ul.categoryListing input[type="button"]{
+    float:right;
+    bottom:0px;
+    width:auto;
+}
+
