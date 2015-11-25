@@ -89,7 +89,10 @@ if(strlen(trim($cbmpTitlePage))==0){
 	    //update url whenever the view is changed
 	    cbmp.interactions.keepURLUpToDateWithLocation('ll', 'lg', 'z', carte.getMap());
 	  }
-          
+	  
+	  if (carte.getSettingValue("cbmp_application_clusterSizeItemCount")=="enabled") {
+	    carte.setClusterSizeOnItemCountEnabled(true);
+	  }
         });
     </script>
   </body>

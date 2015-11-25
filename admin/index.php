@@ -93,6 +93,13 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
             <label for="cbmp_application_minZoom">Min Zoom Level : </label>
             <input type="number" name="cbmp_application_minZoom" min=0 max=28 value="<?=$settings->getSettingValue('cbmp_application_minZoom')?>"/>
           </li>
+          <li>
+            <label for="cbmp_application_clusterSizeItemCount">Cluster Size On Item Count : </label>
+            <select name="cbmp_application_clusterSizeItemCount">
+              <option value="enabled"  <?="enabled"==$settings->getSettingValue("cbmp_application_clusterSizeItemCount")?"selected":""?>>Enabled</option>
+              <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_clusterSizeItemCount")?"selected":""?>>Disabled</option>
+            </select>
+          </li>
         </ul>
         <h1>Authoring</h1>
         <ul class="form">

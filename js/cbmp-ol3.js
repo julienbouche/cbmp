@@ -11,6 +11,7 @@ var cbmp = {
         var zoomOnFirstTracking=true;
         var NB_PLACES_CATEGORY;
         var settingsMap;
+        var clusterSizeDependingOnItemCount = false;
         
         /**
          * Function to hide the popup
@@ -81,6 +82,9 @@ var cbmp = {
             zoomOnFirstTracking=true;
         };
         
+        this.setClusterSizeOnItemCountEnabled = function(bool){
+            clusterSizeDependingOnItemCount = bool;
+        }
         
         /**
          * Function that initialize the geolocation feature
@@ -300,9 +304,14 @@ var cbmp = {
                             //if cluster size not present in the cache, create new style
                             if(!styleCache[category_type][size]) {
                             //Clustering strategy for multiple elements
+                                var radius = 10;
+                                if (clusterSizeDependingOnItemCount) {
+                                    radius+=size;
+                                }
+                                
                                 style = [new ol.style.Style({
                                     image: new ol.style.Circle({
-                                        radius: 10,
+                                        radius: radius,
                                         stroke: new ol.style.Stroke({color: '#fff'}),
                                         fill: new ol.style.Fill({color: category_color})
                                         }),
