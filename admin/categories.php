@@ -15,7 +15,7 @@ if(strlen(trim($cbmpTitlePage))==0){
 if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
   //then we can allow user to save modifications
   if(isset($_POST['CATEGORY_UPDATE'])){
-    if(isset($_POST['name']) && isset($_POST['idcat'])){
+    if(isset($_POST['name']) && isset($_POST['idcat']) && isset($_POST['catcolor'])){
       $str_fileinput_name = "img_file_".$_POST['idcat'];
       
       if(isset($_FILES[$str_fileinput_name])){
@@ -25,6 +25,7 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
       //if necessary save any change in the name
       //if name changes, we need to update the corresponding image filename
       $newname = mysql_real_escape_string($_POST['name']);
+      $newcolor = mysql_real_escape_string($_POST['catcolor']);
       $idcat = intval($_POST['idcat']);
       
       //read the old category name
@@ -38,8 +39,12 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
 	  rename($str_oldfilename, '../img/'.$newname.'.png');
 	}
 	
+	//verify color format
+	if(strlen($newcolor)>6){ //'#ABCDEF' -> 'ABCDEF'
+	  $newcolor = substr($newcolor, strlen($newcolor)-6, 6);
+	}
 	//renaming category in database
-	$sql= "UPDATE category SET name='$newname' WHERE id=$idcat";
+	$sql= "UPDATE category SET name='$newname', clustercolor='$newcolor' WHERE id=$idcat";
         mysql_query($sql);
       }
       else{
@@ -97,7 +102,7 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
         <h1>Categories</h1>
       
         <?php
-        $sql="select id,name FROM category";
+        $sql="select id,name, clustercolor FROM category";
         $result = mysql_query($sql);        
         ?>
         
@@ -110,6 +115,7 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
 		  <input type="text" name="name" value="<?=$row['name']?>" />
 		  <img src="../img/<?=$row['name']?>.png" >
 		  <span>Change icon : <input name="img_file_<?=$row['id']?>" type="file" size="25" /></span>
+		  <span>Clustering color :<input type="color" name="catcolor" value="#<?=$row['clustercolor']?>"></span>
 		  <input type="submit" name="CATEGORY_UPDATE" value="Save"/>
 		</form>
 	      </li>
