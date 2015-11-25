@@ -264,8 +264,7 @@ var cbmp = {
                     source: placesLayers[index],
                     style: function(feature, resolution) {
                         var size = feature.get('features').length;
-                        var style = styleCache[size];  
-                      
+                        
                         if (size==1) {
                             //Only One element to show
                             var icon_name = feature.get('features')[0].get('type');
@@ -289,21 +288,35 @@ var cbmp = {
                             })];
                         }
                         else {
-                            if (!style) {
-                                //Clustering strategy for multiple elements
+                            var category_type = feature.get('features')[0].get('type');
+                            var category_color = "#"+feature.get('features')[0].get('color');
+                            var style;
+                            
+                            if (!styleCache[category_type]){
+                                //init
+                                styleCache[category_type] = {};
+                            }
+                            
+                            //if cluster size not present in the cache, create new style
+                            if(!styleCache[category_type][size]) {
+                            //Clustering strategy for multiple elements
                                 style = [new ol.style.Style({
                                     image: new ol.style.Circle({
                                         radius: 10,
                                         stroke: new ol.style.Stroke({color: '#fff'}),
-                                        fill: new ol.style.Fill({color: '#FFCC00'})
+                                        fill: new ol.style.Fill({color: category_color})
                                         }),
                                     text: new ol.style.Text({
                                         text: size.toString(),
                                         fill: new ol.style.Fill({color: '#fff'})
                                     })
                                 })];
-                                styleCache[size] = style;
+                                if (!styleCache[category_type]) {
+                                    
+                                }
+                                styleCache[category_type][size] = style;
                             }
+                            else return styleCache[category_type][size];
                       }
                       return style;
                     }
@@ -494,7 +507,8 @@ var cbmp = {
                                 geometry : new ol.geom.Point([jsonPlaces[indexPlaces].lng/1000000,jsonPlaces[indexPlaces].lat/1000000]).transform('EPSG:4326', 'EPSG:3857'),
                                 name : jsonPlaces[indexPlaces].name,
                                 id : jsonPlaces[indexPlaces].id,
-                                type : jsonPlaces[indexPlaces].type
+                                type : jsonPlaces[indexPlaces].type,
+                                color : jsonPlaces[indexPlaces].color
                             });
                             
                             currentType = jsonPlaces[indexPlaces].type;

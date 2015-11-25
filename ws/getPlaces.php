@@ -3,7 +3,7 @@
 
     db_connect();
 
-    $sql = "SELECT DISTINCT place.id as id, place.name as place, lat, lng, category.name as category FROM place, category WHERE place.id_category=category.id";
+    $sql = "SELECT DISTINCT place.id as id, place.name as place, lat, lng, category.name as category, category.clustercolor as color FROM place, category WHERE place.id_category=category.id";
     if(isset($_GET['q'])){
         $filter = mysql_real_escape_string($_GET['q']);
         $sql .= " AND place.name like '%$filter%'";
@@ -23,7 +23,8 @@
         "name" : "<?=htmlspecialchars(addslashes((utf8_encode($row['place']))))?>",
         "lat" : <?=$row['lat']?>,
         "lng" : <?=$row['lng']?>,
-        "type" : "<?=$row['category']?>"
+        "type" : "<?=$row['category']?>",
+        "color" : "<?=$row['color']?>"
     }
 <?php
             if($cpt < $nb_places){
