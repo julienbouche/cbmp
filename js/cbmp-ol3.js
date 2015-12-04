@@ -12,6 +12,22 @@ var cbmp = {
         var NB_PLACES_CATEGORY;
         var settingsMap;
         var clusterSizeDependingOnItemCount = false;
+        var addingLocation = false;
+        
+        /**
+         *
+         * Enables the user to add a new Location
+         */
+        this.activateAddLocation = function(){
+            addingLocation = true;
+        }
+        
+        /**
+         * Disable the ability to add a new Location
+         */
+        this.deactivateAddLocation = function(){
+            addingLocation = false;
+        }
         
         /**
          * Function to hide the popup
@@ -439,53 +455,92 @@ var cbmp = {
             map.addOverlay(popup);
             
             //add an event to trap clicking elements
-            map.on('click', function(evt) {
-                //retrieve element that has been clicked
-                var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-                    return feature;
-                });
-                
-                if (feature) { //if element exists, show infos from it
-                    //get the position
-                    var geometry = feature.getGeometry();
-                    var coord = evt.coordinate; 
-                    popup.setPosition(coord);
-                    
-                    if (feature.get('features') && feature.get('features').length==1 && feature.get('features')[0].get("name")) {//there is an existing place where the user clicked     
-                        var selectedFeature = feature.get('features')[0];
-                        //load informations from URL
-                        xhr = createXHR();
-                        if(xhr!=null) {
-                            xhr.open("GET","displayPlaceInfos.php?id="+selectedFeature.get('id'), true);
-                            xhr.onreadystatechange = function(){
-                                popup.show(coord, xhr.responseText);
-                            };
-                            xhr.send(null);
-                        }
-                        
-                    }
-                    else{ //the user is trying to add a new place
-                        var lng, lat, newcoord;
-                        newcoord = geometry.clone().transform("EPSG:3857","EPSG:4326").getCoordinates();
-                        lng = newcoord[0];
-                        lat = newcoord[1];
-                        xhr = createXHR();
-                        if(xhr!=null) {
-                            xhr.open("GET","addPlaceForm.php?lat="+lat+"&lng="+lng, true);
-                            xhr.onreadystatechange = function(){
-                                popup.show(coord, xhr.responseText);
-                            };
-                            xhr.send(null);
-                        }
-                    }
-                }
-                else{
-                    //hide potentially previously displayed popup
-                    popup.hide();
+            map.on('singleclick', function(evt) {
+                _this.clickHandler(evt);
+            });
+            var press_start, press_end;
+            map.on('touchstart', function(evt){
+                press_start = new Date().getTime();
+            });
+            map.on('touchend', function(){
+                alert('touchend');
+                press_end = new Date().getTime();
+                if (press_end-press_start > 1000) {
+                    //code
+                    alert('Long press');
                 }
             });
         };
         
+        
+        //@TODO this probably would better be in cbmp-interactions.js
+        this.clickHandler = function(evt){
+            //retrieve element that has been clicked
+            var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+                return feature;
+            });
+            
+            if (feature) { //if element exists, show infos from it
+                //get the position
+                var geometry = feature.getGeometry();
+                
+                if (feature.get('features') && feature.get('features').length==1 && feature.get('features')[0].get("name")) {//there is an existing place where the user clicked     
+                    var selectedFeature = feature.get('features')[0];
+                    //load informations from URL
+                    xhr = createXHR();
+                    if(xhr!=null) {
+                        xhr.open("GET","displayPlaceInfos.php?id="+selectedFeature.get('id'), true);
+                        xhr.onreadystatechange = function(){
+                            popup.show(evt.coordinate, xhr.responseText);
+                        };
+                        xhr.send(null);
+                    }
+                    
+                }
+                else{ //the user is trying to add a new place
+                    if (addingLocation == true){    
+                        var lng, lat, newcoord;
+                        newcoord = geometry.clone().transform("EPSG:3857","EPSG:4326").getCoordinates();
+                        lng = newcoord[0];
+                        lat = newcoord[1];
+                        _this.displayNewLocationForm(evt.coordinate, lat, lng);
+                    }
+                    else{
+                        //user clicked on a cluster or on his position
+                    } 
+                    
+                }
+            }
+            else{ //user clicked on the map
+                
+                //hide potentially previously displayed popup
+                popup.hide();
+                
+                //if user is trying to add a new location, this code will handle mobiles devices
+                if (addingLocation == true) {
+                    var lng, lat, newcoord;
+                    newcoord = ol.proj.transform(evt.coordinate, "EPSG:3857","EPSG:4326");
+                    lng = newcoord[0];
+                    lat = newcoord[1];
+                    
+                    _this.displayNewLocationForm(evt.coordinate, lat, lng);
+                }
+            }
+        };
+        
+        /**
+         * Function that display a form at the coord location, to add a new location
+         */
+        this.displayNewLocationForm = function(coord, lat, lng){
+            xhr = createXHR();
+            if(xhr!=null) {
+                xhr.open("GET","addPlaceForm.php?lat="+lat+"&lng="+lng, true);
+                xhr.onreadystatechange = function(){
+                    popup.show(coord, xhr.responseText);
+                };
+                xhr.send(null);
+            }
+        }
         
         /**
          * Function to load the places from the backend page in JSON format

@@ -74,7 +74,7 @@ if(strlen(trim($cbmpTitlePage))==0){
 	  
 	  if (carte.getSettingValue("cbmp_application_NewLocation") == "enabled") {
 	    //add the ability to add new place using the mouse
-	    cbmp.interactions.addDrawControl(carte.getMap());
+	    cbmp.interactions.addDrawControl(carte);
 	  }
           
 	  if (carte.getSettingValue("cbmp_application_geotrack") == "enabled") {

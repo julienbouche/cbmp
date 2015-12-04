@@ -47,11 +47,13 @@ cbmp.interactions = {
             var switchDrawInteraction = function(e) {
                 if (!draw_enabled) {
                     //enable the creation of new places 
-                    cbmp.interactions.enableDrawInteraction(map);
+                    cbmp.interactions.enableDrawInteraction(map.getMap());
+                    map.activateAddLocation();
                 }
                 else {
                     //disable the creation of new places
-                    cbmp.interactions.disableDrawInteraction(map);
+                    cbmp.interactions.disableDrawInteraction(map.getMap());
+                    map.deactivateAddLocation();
                 }
                 draw_enabled = !draw_enabled;
             };
@@ -140,9 +142,10 @@ cbmp.interactions = {
     /**
      * Function to add a user control to enable/disable the functionnality to add a new place
      */
-    addDrawControl : function(map){
+    addDrawControl : function(carte){
+        map = carte.getMap();
         ol.inherits(cbmp.interactions.generateDrawControl, ol.control.Control);
-        map.addControl(new cbmp.interactions.generateDrawControl(map));
+        map.addControl(new cbmp.interactions.generateDrawControl(carte));
     },
     
     
