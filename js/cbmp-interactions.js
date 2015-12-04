@@ -121,7 +121,6 @@ cbmp.interactions = {
         anchor.title = title;
         
         anchor.addEventListener('click', clickCallback, false);
-        anchor.addEventListener('touchstart', clickCallback, false);
         
         var controlContainerDOM = document.getElementById('cmbpControlContainer');
         
