@@ -121,3 +121,29 @@ div.admin-menu>ul>li:hover>a{
     color: white;
     font-weight: normal;
 }
+
+
+table.statistics{
+   width:300px;
+   border-collapse: collapse;
+   margin-left:20px;
+}
+table.statistics tr td{
+    padding-left:20px;
+}
+table.statistics tr:nth-child(even){
+    
+}
+
+table.statistics tr:nth-child(odd){
+    background-color:#ffee66;
+}
+
+
+table.statistics tr:last-child{
+    font-weight: bold;
+}
+table.statistics tr:last-child td:first-child{
+    text-align: right;
+    padding-right: 20px;
+}
