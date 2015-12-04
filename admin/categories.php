@@ -95,6 +95,7 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
               <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/admin/index.php">Main</a></li>
               <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/admin/acl.php">Users & Groups</a></li>
 	      <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/admin/categories.php">Categories</a></li>
+	      <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/admin/statistics.php">Statistics</a></li>
           </ul>
       </div>
     </nav>
