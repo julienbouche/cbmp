@@ -101,6 +101,13 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
               <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_clusterSizeItemCount")?"selected":""?>>Disabled</option>
             </select>
           </li>
+          <li>
+            <label for="cbmp_application_locationsName">Location's Name: </label>
+            <select name="cbmp_application_locationsName">
+              <option value="enabled"  <?="enabled"==$settings->getSettingValue("cbmp_application_locationsName")?"selected":""?>>Enabled</option>
+              <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_locationsName")?"selected":""?>>Disabled</option>
+            </select>
+          </li>
         </ul>
         <h1>Authoring</h1>
         <ul class="form">
