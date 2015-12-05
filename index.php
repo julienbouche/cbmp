@@ -50,8 +50,8 @@ if(strlen(trim($cbmpTitlePage))==0){
             <a href="#" class="nav-close">Close</a>
             <div id="main-menu">
                 <ul>
-                    <li><a href="index.html">The Map</a></li>
-                    <li><a href="project.html">The Project</a></li>
+                    <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/index.php">The Map</a></li>
+                    <li><a href="<?=$settings->getSettingValue("cbmp_application_baseurl")?>/project.html">The Project</a></li>
                 </ul>
             </div>
         </nav>  
