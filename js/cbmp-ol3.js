@@ -462,18 +462,6 @@ var cbmp = {
             map.on('singleclick', function(evt) {
                 _this.clickHandler(evt);
             });
-            var press_start, press_end;
-            map.on('touchstart', function(evt){
-                press_start = new Date().getTime();
-            });
-            map.on('touchend', function(){
-                alert('touchend');
-                press_end = new Date().getTime();
-                if (press_end-press_start > 1000) {
-                    //code
-                    alert('Long press');
-                }
-            });
         };
         
         
