@@ -8,7 +8,7 @@ $settings = new CBMPSettings();
 
 if(isset($_GET['id'])){
     $id = intval($_GET['id']);
-    $sql_query = "SELECT DISTINCT place.id as id, place.name as placeName, lat, lng, description, website, facebook, twitter, category.name as category FROM place, category WHERE place.id_category=category.id AND place.id=$id";
+    $sql_query = "SELECT DISTINCT place.id as id, place.name as placeName, def_closed, lat, lng, description, website, facebook, twitter, category.name as category FROM place, category WHERE place.id_category=category.id AND place.id=$id";
     $result= mysql_query($sql_query);
     
     if($result && mysql_numrows($result)>0){
@@ -18,6 +18,9 @@ if(isset($_GET['id'])){
 
 <div>
     <h2><?=utf8_encode($stripslashes($row['placeName']))?></h2>
+    <?php if($row['def_closed']=='1') : ?>                
+        <img src="img/gemicon/closed32x32.png" alt="No longer exists" title="No longer exists" height="20" width="20"/>
+    <?php endif; ?>
     <?php if($row['website']) : ?>                
         <a href="<?=$row['website']?>" target="_blank"><img src="img/gemicon/website32x32.png" height="20" width="20"/></a>
     <?php endif; ?>

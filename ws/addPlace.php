@@ -31,12 +31,19 @@
             $twitter = "http://".$twitter;
         }
         
+        //managing checkbox "def_closed" : true/false
+        $def_closed = false;
+        if($_POST['def_closed']){
+            $def_closed = 1;
+        }
+        
+        
         //inserting new entry
         if(isset($_POST['id']) and strlen($_POST['id'])>0){
             //we verify if editing is enable
             if($settings->getSettingValue('cbmp_application_EditLocation')=='enabled'){
                 $id = intval($_POST['id']);
-                $sql = "UPDATE place set name='$name', description='$desc', website='$website', id_category=$id_cat, facebook='$facebook', twitter='$twitter' WHERE id=$id";
+                $sql = "UPDATE place set name='$name', description='$desc', website='$website', id_category=$id_cat, facebook='$facebook', twitter='$twitter', def_closed=$def_closed WHERE id=$id";
             }
         }
         else{
@@ -44,7 +51,7 @@
             $lat =  intval($_POST['lat']*1000000);
             $lng = intval($_POST['lng']*1000000);
             
-            $sql = "INSERT INTO place(name, description, lat, lng, website, id_category, facebook, twitter) VALUES('$name', '$desc', $lat, $lng, '$website', $id_cat, '$facebook', '$twitter')";
+            $sql = "INSERT INTO place(name, description, lat, lng, website, id_category, facebook, twitter, def_closed) VALUES('$name', '$desc', $lat, $lng, '$website', $id_cat, '$facebook', '$twitter', $def_closed)";
         }
         
         $result = mysql_query($sql);
