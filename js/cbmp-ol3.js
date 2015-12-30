@@ -13,6 +13,7 @@ var cbmp = {
         var settingsMap;
         var clusterSizeDependingOnItemCount = false;
         var addingLocation = false;
+        var displayLocationsNamesOnTheMap = false;
         
         /**
          *
@@ -203,8 +204,10 @@ var cbmp = {
          * @param {Function} interactionsCallbackFunction function to be called after required initialisation
          */
         this.init = function(menu_dom_element_id, interactionsCallbackFunction){
+            
             this.loadSettings("ws/getSettings.php", function(){
                     _this.load_categories(menu_dom_element_id, function(){
+                        displayLocationsNamesOnTheMap = (_this.getSettingValue("cbmp_application_locationsName") == "enabled");
                         //launch initialisation of map elements
                         _this.initLayers();
                         
@@ -300,9 +303,10 @@ var cbmp = {
                                     scale:0.5
                                 })),
                                 text: new ol.style.Text({
-                                    text: '',
+                                    text: displayLocationsNamesOnTheMap?feature.get('features')[0].get('name'):'',
+                                    offsetY:30,
                                     fill: new ol.style.Fill({
-                                        color: '#fff'
+                                        color: '#000'
                                     })
                                 })
                             })];
