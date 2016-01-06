@@ -32,7 +32,7 @@
         }
         
         //managing checkbox "def_closed" : true/false
-        $def_closed = false;
+        $def_closed = 0;
         if($_POST['def_closed']){
             $def_closed = 1;
         }
