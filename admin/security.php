@@ -8,12 +8,12 @@ function verify_session($url){
     
     if(!isset($_SESSION['username'])){
         //is the user has a cookie
-        if(isset($_COOKIE['cbmp.administration'])){
+        /*if(isset($_COOKIE['cbmp.administration'])){
             //@TODO if we implement cookies management
         }
-        else {
+        else {*/
             header('Location:login.php');
-        }
+        //}
     }
 }
 
