@@ -125,6 +125,13 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
               <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_EditLocation")?"selected":""?>>Disabled</option>
             </select>
           </li>
+          <li>
+            <label for="cbmp_application_DeleteLocation">Delete location : </label>
+            <select name="cbmp_application_DeleteLocation">
+              <option value="enabled"  <?="enabled"==$settings->getSettingValue("cbmp_application_DeleteLocation")?"selected":""?>>Enabled</option>
+              <option value="disabled" <?="disabled"==$settings->getSettingValue("cbmp_application_DeleteLocation")?"selected":""?>>Disabled</option>
+            </select>
+          </li>
         </ul>
         <h1>User</h1>
         <ul class="form">

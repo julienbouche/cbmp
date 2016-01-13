@@ -7,7 +7,7 @@
 
     if(isset($_POST['id'])){
         //we verify if editing is enable
-        if($settings->getSettingValue('cbmp_application_EditLocation')=='enabled'){
+        if($settings->getSettingValue('cbmp_application_EditLocation')=='enabled' && $settings->getSettingValue('cbmp_application_DeleteLocation')=='enabled'){
             $id = intval($_POST['id']);
         
             $sql = "DELETE FROM place WHERE id=$id";
