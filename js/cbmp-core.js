@@ -81,7 +81,17 @@ function sendFormData(form) {
 		//
 		if (form.elements[i].type!='submit') {
 			//add every data from the form as an url encoded string
-			data+=form.elements[i].name+'='+encodeURIComponent(form.elements[i].value)+'&';
+			if (form.elements[i].type!='checkbox') {
+				data+=form.elements[i].name+'='+encodeURIComponent(form.elements[i].value)+'&';
+			}
+			else {
+				//element type is checkbox
+				if (form.elements[i].checked) {
+					data+=form.elements[i].name+'='+encodeURIComponent(form.elements[i].value)+'&';
+
+				}
+			}
+			
 		}
 	}
 	

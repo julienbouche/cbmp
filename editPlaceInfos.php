@@ -23,7 +23,7 @@ if(isset($_GET['id']) && strlen(trim($_GET['id'])) > 0 ){
     <input type='text' placeholder='http://' name='website' value='<?=$row['website']?>' />
     <input type='text' placeholder='URL Facebook' name='facebook' value='<?=$row['facebook']?>' />
     <input type='text' placeholder='URL twitter' name='twitter' value='<?=$row['twitter']?>' />
-    <span>Definitely Closed : <input type="checkbox" name="def_closed" <?=$row['def_closed']?'checked':''?>/></span>
+    <span>Definitely Closed : <input type="checkbox" name="def_closed" <?=$row['def_closed']?'checked':''?> value="1"/></span>
     <?php
         $query="SELECT id, name FROM category";
         

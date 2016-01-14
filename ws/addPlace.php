@@ -38,6 +38,7 @@
         }
         
         
+        
         //inserting new entry
         if(isset($_POST['id']) and strlen($_POST['id'])>0){
             //we verify if editing is enable
