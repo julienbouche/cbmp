@@ -16,7 +16,7 @@ if(strlen(trim($cbmpTitlePage))==0){
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="lib/ol3/css/ol.css" type="text/css">
     <link rel="stylesheet" href="css/main.css" type="text/css">
