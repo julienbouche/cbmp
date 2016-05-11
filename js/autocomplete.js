@@ -61,6 +61,7 @@
 	
 	function selectItem(li_element, input_dom){
 		input_dom.value = li_element.innerHTML;
+		li_element.click();
 	}
 	
 	function activateAutoComplete(){
@@ -75,7 +76,7 @@
 		document.getElementById("ac_container").style.display="none";
 	}
 	
-	function captureKeyEvents(elt, event){
+	function captureKeyEvents(elt, event, koCallbackFunction){
 		var li_items = document.getElementsByTagName("li");
 		var displayed_li_items = new Array();
 		var cpt_displayed_li_items = 0;
@@ -88,7 +89,7 @@
 		}
 		
 		switch(event.keyCode){
-			case 9 : //tab
+			case 13 : //enter
 				//validate the selected item displayed
 				var selected = findSelectedItem(displayed_li_items);
 				if(selected>=0){
@@ -103,6 +104,8 @@
 				//changes the selected item to the next one in the list
 				selectNextItem(displayed_li_items);
 				break;
+			default :
+				koCallbackFunction();
 		}
 	}
 	

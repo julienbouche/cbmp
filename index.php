@@ -34,11 +34,11 @@ if(strlen(trim($cbmpTitlePage))==0){
     <title><?=$cbmpTitlePage?></title>
   </head>
   <body>
-    <header><input type="search" placeholder="search" class="autoCompletionTextBox"
-                  onkeydown="captureKeyEvents(this, event)"
+    <header><input type="search" placeholder="search" class="autoCompletionTextBox" id="searchTextBox"
+                  onkeydown=""
                 onfocus="activateAutoComplete();"
 	       onblur="disableAutoComplete();"
-	       onkeyup="filterlist(this.value, document.getElementById('placesList'))" />
+	       onkeyup="captureKeyEvents(this, event, function f(){filterlist(document.getElementById('searchTextBox').value, document.getElementById('placesList'))});" />
       <div class="autoCompletion" id="ac_container">
 		<ul id="placesList">
 		</ul>
