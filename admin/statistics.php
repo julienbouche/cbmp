@@ -15,7 +15,7 @@ if(strlen(trim($cbmpTitlePage))==0){
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="../css/main.css" media="screen" type="text/css" />
     <link rel="stylesheet" href="../css/admin.css" media="screen" type="text/css" />
