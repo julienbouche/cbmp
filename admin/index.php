@@ -79,14 +79,6 @@ if(userBelongToGroup($_SESSION['username'], 'ADMINISTRATORS')){
         <h1>Map's Display</h1>
         <ul class="form">
           <li>
-            <label for="cbmp_application_baselayer">Base Layer : </label>
-            <select name="cbmp_application_baselayer">
-              <option value="osm" <?="osm"==$settings->getSettingValue("cbmp_application_baselayer")?"selected":""?>>Roads (OSM)</option>
-              <option value="sat" <?="sat"==$settings->getSettingValue("cbmp_application_baselayer")?"selected":""?>>Satellite (OSM)</option>
-              <option value="hyb" <?="hyb"==$settings->getSettingValue("cbmp_application_baselayer")?"selected":""?>>Hybrid (OSM)</option>
-            </select>
-          </li>
-          <li>
             <label for="cbmp_application_maxZoom">Max Zoom Level : </label>
             <input type="number" name="cbmp_application_maxZoom" min=0 max=28 value="<?=$settings->getSettingValue('cbmp_application_maxZoom')?>"/>
           </li>
