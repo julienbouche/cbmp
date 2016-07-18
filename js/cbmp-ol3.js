@@ -394,39 +394,10 @@ var cbmp = {
             var mapLayerSource;
             
             
-            if (settingsMap != undefined && settingsMap.cbmp_application_baselayer != undefined){
-                //code
-                switch(settingsMap.cbmp_application_baselayer){
-                    case "osm":
-                        mapLayerSource = new ol.layer.Tile({
-                            source: new ol.source.MapQuest({layer: settingsMap.cbmp_application_baselayer})
-                        });
-                        break;
-                    case "sat" :
-                        mapLayerSource = new ol.layer.Tile({
-                            source: new ol.source.MapQuest({layer: settingsMap.cbmp_application_baselayer})
-                        });
-                        break;
-                    case "hyb" :
-                        mapLayerSource = new ol.layer.Group({
-                            style: 'AerialWithLabels',
-                            layers: [
-                              new ol.layer.Tile({
-                                source: new ol.source.MapQuest({layer: 'sat'})
-                              }),
-                              new ol.layer.Tile({
-                                source: new ol.source.MapQuest({layer: 'hyb'})
-                              })
-                            ]
-                          });
-                        break;
-                }
-            }
-            else {//default value
-                mapLayerSource = new ol.layer.Tile({
-                    source: new ol.source.MapQuest({layer: "osm"})
+            mapLayerSource = new ol.layer.Tile({
+                    source: new ol.source.OSM()
                 });
-            }
+            
             //defines the map
             map = new ol.Map({
                 target: container,
