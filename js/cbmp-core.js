@@ -16,6 +16,13 @@ function createXHR(){
 	return xhr;
 }
 
+/*
+ *Defines a function to decode HTML char to be displayed in JS
+ */
+function HTMLDecode(value) {
+	return (!value) ? value : value.replace("&amp;", "&");
+}
+
 function getEditForm(element,id){
 	//send the delete order
 		var xhr = createXHR();
